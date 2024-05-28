@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!-- 성 -->
+        <TextView
+            android:id="@+id/textViewLastName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="성"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:onClick="onEditLastNameClick"/>
+
+        <EditText
+            android:id="@+id/editTextLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewLastName"
+            android:layout_marginTop="8dp"
+            android:hint="성을 입력하세요"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <!-- 이름 -->
+        <TextView
+            android:id="@+id/textViewFirstName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textStyle="bold"
+            android:layout_below="@id/editTextLastName"
+            android:layout_marginTop="16dp"
+            android:onClick="onEditFirstNameClick"/>
+
+        <EditText
+            android:id="@+id/editTextFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewFirstName"
+            android:layout_marginTop="8dp"
+            android:hint="이름을 입력하세요"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <!-- 성별 -->
+        <TextView
+            android:id="@+id/textViewGender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="성별"
+            android:textStyle="bold"
+            android:layout_below="@id/editTextFirstName"
+            android:layout_marginTop="16dp"
+            android:onClick="onEditGenderClick"/>
+
+        <Spinner
+            android:id="@+id/spinnerGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewGender"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:visibility="gone"
+            android:entries="@array/gender_array"/>
+
+        <!-- 생년월일 -->
+        <TextView
+            android:id="@+id/textViewDOB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="생년월일"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerGender"
+            android:layout_marginTop="16dp"
+            android:onClick="onEditDOBClick"/>
+
+        <DatePicker
+            android:id="@+id/datePickerDOB"
+            android:datePickerMode="spinner"
+            android:calendarViewShown="false"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewDOB"
+            android:layout_marginTop="8dp"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <!-- 키 -->
+        <TextView
+            android:id="@+id/textViewHeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="키"
+            android:textStyle="bold"
+            android:layout_below="@id/datePickerDOB"
+            android:layout_marginTop="16dp"
+            android:onClick="onEditHeightClick"/>
+
+        <EditText
+            android:id="@+id/editTextHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewHeight"
+            android:layout_marginTop="8dp"
+            android:hint="키를 입력하세요"
+            android:enabled="false"
+            android:visibility="gone"/>
+
+        <!-- 수정 버튼 -->
+        <Button
+            android:id="@+id/buttonEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextHeight"
+            android:layout_marginTop="16dp"
+            android:text="수정"/>
+    </RelativeLayout>
+</ScrollView>
