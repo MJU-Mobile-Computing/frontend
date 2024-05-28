@@ -1,67 +1,104 @@
 package com.example.mc_project
 
+import android.app.TimePickerDialog
 import android.os.Bundle
-import android.os.SystemClock
-import android.widget.Toast
-import com.example.mc_project.databinding.ActivityTimerBinding
+import android.os.CountDownTimer
+import android.widget.Button
+import android.widget.TextView
+import android.widget.TimePicker
+import androidx.appcompat.app.AppCompatActivity
+import com.example.mc_project.BaseActivity
+import com.google.android.material.appbar.MaterialToolbar
+import java.util.*
 
 class TimerActivity : BaseActivity() {
-    private lateinit var binding: ActivityTimerBinding
-    private var time = 0L
+
+    private lateinit var timerTextView: TextView
+    private lateinit var ssButton: Button
+    private lateinit var resetButton: Button
+
     private var isRunning = false
-    private var doubleClickDelay: Long = 300
-    private var lastClickTime: Long = 0
+    private var timeLeftInMillis: Long = 7200000 // 2 hours in milliseconds
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTimerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContentView(R.layout.activity_timer)
 
-        // 뒤로가기 버튼 추가
-        addBackButton()
 
-        // 버튼 처음 상태 (start)
-        binding.ssbutton.text = getString(R.string.start)
+        timerTextView = findViewById(R.id.timer)
+        ssButton = findViewById(R.id.ssbutton)
+        resetButton = findViewById(R.id.resetButton)
 
-        // Start, Stop 버튼 == ssbutton
-        binding.ssbutton.setOnClickListener {
-            //예외처리 버튼을 재빠르게 더블 클릭한 경우
-            val currentTime = SystemClock.elapsedRealtime()
-            if (currentTime - lastClickTime < doubleClickDelay) {
-                showToast("start/stop button already double clicked!")
-                return@setOnClickListener
-            }
-            lastClickTime = currentTime
+        ssButton.setOnClickListener {
             if (isRunning) {
-                // 크로노미터를 stop 후 시간 업데이트
-                binding.timer.stop()
-                time = (SystemClock.elapsedRealtime() - binding.timer.base)
-
-                // 버튼 "Start"로 바꾸기
-                binding.ssbutton.text = getString(R.string.start)
-                isRunning = false
+                pauseTimer()
             } else {
-                // 크로노미터 start 후 초기 시간
-                binding.timer.base = SystemClock.elapsedRealtime() - time
-                binding.timer.start()
-
-                // 버튼 "Stop"으로 바꾸기
-                binding.ssbutton.text = getString(R.string.stop)
-                isRunning = true
+                startTimer()
             }
         }
 
-        binding.reset.setOnClickListener {
-            time = 0L
-            binding.timer.base = SystemClock.elapsedRealtime()
-            binding.timer.stop()
-
-            binding.ssbutton.text = getString(R.string.start)
-            isRunning = false
+        resetButton.setOnClickListener {
+            resetTimer()
         }
+
+
+        updateCountDownText()
     }
 
-    private fun showToast(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+    private fun startTimer() {
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                updateCountDownText()
+            }
+
+            override fun onFinish() {
+                isRunning = false
+                ssButton.text = "타이머 시작하기"
+            }
+        }.start()
+
+        isRunning = true
+        ssButton.text = "타이머 일시정지"
+    }
+
+    private fun pauseTimer() {
+        countDownTimer.cancel()
+        isRunning = false
+        ssButton.text = "타이머 시작하기"
+    }
+
+    private fun resetTimer() {
+        timeLeftInMillis = 7200000 // 2 hours in milliseconds
+        updateCountDownText()
+        ssButton.text = "타이머 시작하기"
+        if (::countDownTimer.isInitialized) {
+            countDownTimer.cancel()
+        }
+        isRunning = false
+    }
+
+    private fun showTimePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
+            val selectedTimeInMillis = (selectedHour * 3600 + selectedMinute * 60) * 1000L
+            timeLeftInMillis = selectedTimeInMillis
+            resetTimer()
+        }, hour, minute, true)
+
+        timePickerDialog.show()
+    }
+
+    private fun updateCountDownText() {
+        val hours = (timeLeftInMillis / 1000) / 3600
+        val minutes = ((timeLeftInMillis / 1000) % 3600) / 60
+        val seconds = (timeLeftInMillis / 1000) % 60
+
+        val timeFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+        timerTextView.text = timeFormatted
     }
 }
