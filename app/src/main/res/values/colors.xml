@@ -3,4 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="progress_bar">#0047AB</color>
+    <color name="nav_item_color">#FF6200EE</color>
+    <color name="nav_item_color_selected">#FF3700B3</color>
 </resources>

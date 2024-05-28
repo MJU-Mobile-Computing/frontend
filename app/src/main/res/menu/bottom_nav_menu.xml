@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_diet"
+        android:icon="@drawable/ic_diet"
+        android:title="식단 등록" />
+    <item
+        android:id="@+id/navigation_timer"
+        android:icon="@drawable/ic_timer"
+        android:title="간헐적 단식 타이머" />
+    <item
+        android:id="@+id/navigation_statistics"
+        android:icon="@drawable/ic_statistics"
+        android:title="먼슬리 통계" />
+    <item
+        android:id="@+id/navigation_inbody"
+        android:icon="@drawable/ic_inbody"
+        android:title="미니 인바디" />
+</menu>
