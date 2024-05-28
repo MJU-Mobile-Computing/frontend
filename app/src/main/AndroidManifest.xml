@@ -21,6 +21,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".FoodRegistrationActivity" />
+        <activity android:name=".ProActivity" />
+        <activity android:name=".CalendarActivity" />
+        <activity android:name=".MyPageActivity" />
+        <activity android:name=".TimerActivity"/>
+        <activity android:name=".ReportActivity"/>
     </application>
 
 </manifest>
