@@ -44,19 +44,20 @@
         android:padding="16dp">
 
         <ImageView
+            android:id="@+id/timerIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
             android:contentDescription="Egg Icon"
-            android:src="@drawable/ic_egg" />
+            android:src="@drawable/ic_egg2" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="8dp"
-            android:text="내 추적기"
+            android:text="내 단식 타이머"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -77,58 +78,10 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="16dp"
             android:padding="12dp"
-            android:text="추적기 시작하기"
+            android:text="단식 시작하기"
             android:textColor="#FFFFFF" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="단식 시작하기"
-                    android:textColor="#7A7A7A"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="오늘, 9:00 오후"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="단식 종료하기"
-                    android:textColor="#7A7A7A"
-                    android:textSize="14sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="내일, 9:00 오전"
-                    android:textColor="#000000"
-                    android:textSize="14sp" />
-            </LinearLayout>
-        </LinearLayout>
     </LinearLayout>
 
     <Button

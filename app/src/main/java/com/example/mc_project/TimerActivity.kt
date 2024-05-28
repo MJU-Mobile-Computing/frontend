@@ -4,8 +4,8 @@ import android.app.TimePickerDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
-import android.widget.TimePicker
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.BaseActivity
 import com.google.android.material.appbar.MaterialToolbar
@@ -16,6 +16,7 @@ class TimerActivity : BaseActivity() {
     private lateinit var timerTextView: TextView
     private lateinit var ssButton: Button
     private lateinit var resetButton: Button
+    private lateinit var timerIcon: ImageView
 
     private var isRunning = false
     private var timeLeftInMillis: Long = 7200000 // 2 hours in milliseconds
@@ -25,10 +26,12 @@ class TimerActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
+        addBackButton()
 
         timerTextView = findViewById(R.id.timer)
         ssButton = findViewById(R.id.ssbutton)
         resetButton = findViewById(R.id.resetButton)
+        timerIcon = findViewById(R.id.timerIcon)
 
         ssButton.setOnClickListener {
             if (isRunning) {
@@ -41,7 +44,6 @@ class TimerActivity : BaseActivity() {
         resetButton.setOnClickListener {
             resetTimer()
         }
-
 
         updateCountDownText()
     }
@@ -56,17 +58,20 @@ class TimerActivity : BaseActivity() {
             override fun onFinish() {
                 isRunning = false
                 ssButton.text = "타이머 시작하기"
+                timerIcon.setImageResource(R.drawable.ic_egg2) // 타이머 종료 후 이미지 변경
             }
         }.start()
 
         isRunning = true
         ssButton.text = "타이머 일시정지"
+        timerIcon.setImageResource(R.drawable.ic_egg1) // 타이머 시작 시 이미지 변경
     }
 
     private fun pauseTimer() {
         countDownTimer.cancel()
         isRunning = false
         ssButton.text = "타이머 시작하기"
+        timerIcon.setImageResource(R.drawable.ic_egg2) // 타이머 일시정지 시 이미지 변경
     }
 
     private fun resetTimer() {
@@ -77,6 +82,7 @@ class TimerActivity : BaseActivity() {
             countDownTimer.cancel()
         }
         isRunning = false
+        timerIcon.setImageResource(R.drawable.ic_egg2) // 리셋 시 이미지 변경
     }
 
     private fun showTimePickerDialog() {
