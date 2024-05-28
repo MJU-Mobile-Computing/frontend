@@ -32,6 +32,18 @@ class MyPageActivity : AppCompatActivity() {
 ////            startActivity(Intent(this, RecommendationsActivity::class.java))
 //        }
 
+//=======
+//
+//import android.os.Bundle
+//import androidx.appcompat.app.AppCompatActivity
+//
+//class MyPageActivity : BaseActivity() {
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_my_page)
+//
+//>>>>>>> 22634c810450501dbe5bcdfcb2b605bac0f64e6f
     }
 }
 

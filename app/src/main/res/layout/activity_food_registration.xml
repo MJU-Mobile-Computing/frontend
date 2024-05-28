@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- activity_food_registration.xml -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- 아침 베너 -->
+    <LinearLayout
+        android:id="@+id/breakfastBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- 아침 이미지 -->
+        <ImageView
+            android:id="@+id/imgBreakfast"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_breakfast" />
+
+        <!-- 아침 텍스트 뷰 -->
+        <TextView
+            android:id="@+id/tvBreakfastMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="아침식사 메뉴"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 아침 베너 추가 버튼 -->
+        <Button
+            android:id="@+id/btnAddBreakfast"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가" />
+    </LinearLayout>
+
+    <!-- 점심 베너 -->
+    <LinearLayout
+        android:id="@+id/lunchBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_below="@id/breakfastBanner">
+
+        <!-- 점심 이미지 -->
+        <ImageView
+            android:id="@+id/imgLunch"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_lunch" />
+
+        <!-- 점심 텍스트 뷰 -->
+        <TextView
+            android:id="@+id/tvLunchMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="점심식사 메뉴"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 점심 베너 추가 버튼 -->
+        <Button
+            android:id="@+id/btnAddLunch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가" />
+    </LinearLayout>
+
+    <!-- 저녁 베너 -->
+    <LinearLayout
+        android:id="@+id/dinnerBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_below="@id/lunchBanner">
+
+        <!-- 저녁 이미지 -->
+        <ImageView
+            android:id="@+id/imgDinner"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_dinner" />
+
+        <!-- 저녁 텍스트 뷰 -->
+        <TextView
+            android:id="@+id/tvDinnerMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="저녁식사 메뉴"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 저녁 베너 추가 버튼 -->
+        <Button
+            android:id="@+id/btnAddDinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가" />
+    </LinearLayout>
+
+    <!-- 간식 베너 -->
+    <LinearLayout
+        android:id="@+id/snackBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_below="@id/dinnerBanner">
+
+        <!-- 간식 이미지 -->
+        <ImageView
+            android:id="@+id/imgSnack"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_snack" />
+
+        <!-- 간식 텍스트 뷰 -->
+        <TextView
+            android:id="@+id/tvSnackMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="간식 메뉴"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+        <!-- 간식 베너 추가 버튼 -->
+        <Button
+            android:id="@+id/btnAddSnack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가" />
+    </LinearLayout>
+
+    <!-- 활동 추천 영역 -->
+    <LinearLayout
+        android:id="@+id/activityRecommendation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@id/snackBanner">
+
+        <TextView
+            android:id="@+id/tvActivityTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추천 활동"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#000"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvActivityDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="초과된 칼로리만큼 활동으로 소모할 수 있습니다."
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginBottom="8dp" />
+
+        <!-- 예시: 산책 추천 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:background="#EEE"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_walk"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="산책"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30분"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
+
+        <!-- 예시: 달리기 추천 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:background="#EEE"
+            android:layout_marginBottom="8dp">
+
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_run"
+                android:layout_marginEnd="8dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="달리기"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20분"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
+
+        <!-- 더 많은 활동 추가 가능 -->
+    </LinearLayout>
+</RelativeLayout>

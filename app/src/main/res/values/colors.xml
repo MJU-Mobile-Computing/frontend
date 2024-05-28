@@ -2,5 +2,11 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+<<<<<<< HEAD
     <color name="progress_bar">#0047AB</color>
+=======
+    <color name="nav_item_color">#FF000000</color>
+    <color name="nav_item_color_selected">#FF3700B3</color>
+    <color name="teal_200">#FF80CBC4</color>
+>>>>>>> 22634c810450501dbe5bcdfcb2b605bac0f64e6f
 </resources>
