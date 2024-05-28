@@ -1,14 +1,11 @@
 <resources>
     <string name="app_name">MC_Project</string>
-<<<<<<< HEAD
     <string-array name="gender_array">
         <item>남자</item>
         <item>여자</item>
     </string-array>
-=======
     <string name="submit">submit</string>
     <string name="start">START</string>
     <string name="reset">RESET</string>
     <string name="stop">STOP</string>
->>>>>>> 22634c810450501dbe5bcdfcb2b605bac0f64e6f
 </resources>
