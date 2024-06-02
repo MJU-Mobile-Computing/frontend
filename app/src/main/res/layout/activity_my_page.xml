@@ -123,6 +123,7 @@
                         android:textSize="16sp"
                         android:paddingBottom="4dp" />
                     <TextView
+                        android:id="@+id/TextViewPrograss"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textStyle="bold"
@@ -168,6 +169,7 @@
                     android:textStyle="bold"
                     android:paddingBottom="8dp" />
                 <TextView
+                    android:id="@+id/textViewGoal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="내 목표: 체중 감소"
@@ -175,6 +177,7 @@
                     android:paddingBottom="4dp" />
 
                 <TextView
+                    android:id="@+id/textViewGoalWeight"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="목표 몸무게: 65 kg"
@@ -182,12 +185,14 @@
                     android:paddingBottom="4dp" />
 
                 <TextView
+                    android:id="@+id/textViewGoalCalorie"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="하루 목표 권장 칼로리: 2000 kcal"
                     android:textSize="16sp"
                     android:paddingBottom="4dp" />
                 <TextView
+                    android:id="@+id/textViewGoalSteps"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="걸음 목표: 10000 걸음"
@@ -230,6 +235,5 @@
                     android:onClick="onShareButtonClick"/>
             </LinearLayout>
         </FrameLayout>
-
     </LinearLayout>
 </ScrollView>

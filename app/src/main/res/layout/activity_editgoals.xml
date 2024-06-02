@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/textViewMyGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 목표:"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerGoal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewMyGoal"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewCurrentWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="현재 몸무게:"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerGoal"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editTextCurrentWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewCurrentWeight"
+            android:layout_marginTop="8dp"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:id="@+id/textViewGoalWeight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="목표 몸무게:"
+            android:textStyle="bold"
+            android:layout_below="@id/editTextCurrentWeight"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editTextGoalWeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewGoalWeight"
+            android:layout_marginTop="8dp"
+            android:inputType="numberDecimal"/>
+
+        <TextView
+            android:id="@+id/textViewRecommendedCalories"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="내 활동량:"
+            android:textStyle="bold"
+            android:layout_below="@id/editTextGoalWeight"
+            android:layout_marginTop="16dp"/>
+
+        <Spinner
+            android:id="@+id/spinnerActivityLevel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewRecommendedCalories"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewGoalSteps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="목표 걸음 수:"
+            android:textStyle="bold"
+            android:layout_below="@id/spinnerActivityLevel"
+            android:layout_marginTop="16dp"/>
+
+        <EditText
+            android:id="@+id/editTextGoalSteps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewGoalSteps"
+            android:layout_marginTop="8dp"
+            android:inputType="number"/>
+
+        <Button
+            android:id="@+id/buttonEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/editTextGoalSteps"
+            android:layout_marginTop="16dp"
+            android:text="수정"/>
+    </RelativeLayout>
+</ScrollView>

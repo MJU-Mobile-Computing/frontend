@@ -1,7 +1,9 @@
 package com.example.mc_project
 
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.Telephony.Mms.Intents
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -29,7 +31,7 @@ class EditProfileActivity : AppCompatActivity() {
         }
 
         // 초기 입력값 설정
-        setInitialValues()
+//        setInitialValues()
 
         // 수정 버튼 클릭 시
         binding.buttonEdit.setOnClickListener {
@@ -38,18 +40,16 @@ class EditProfileActivity : AppCompatActivity() {
     }
 
     private fun setInitialValues() {
-        binding.textViewLastName.text = "홍"
         binding.editTextLastName.setText("홍")
 
-        binding.textViewFirstName.text = "길동"
         binding.editTextFirstName.setText("길동")
 
         binding.spinnerGender.setSelection(0) // 디폴트는 남성으로 설정
 
-        binding.textViewDOB.text = "2000-01-01"
+        binding.textViewDOB.text = "생일: 2000-01-01"
         binding.datePickerDOB.init(2000, 0, 1, null)
 
-        binding.textViewHeight.text = "175"
+        binding.textViewHeight.text = "키: 175"
         binding.editTextHeight.setText("175")
     }
 
@@ -76,19 +76,36 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        saveProfile() // 뒤로가기 버튼을 누를 때도 프로필을 저장
+        super.onBackPressed()
+    }
+
     private fun saveProfile() {
         val lastName = binding.editTextLastName.text.toString()
         val firstName = binding.editTextFirstName.text.toString()
         val gender = binding.spinnerGender.selectedItem.toString()
         val dob = "${binding.datePickerDOB.year}-${binding.datePickerDOB.month + 1}-${binding.datePickerDOB.dayOfMonth}"
         val height = binding.editTextHeight.text.toString()
+        val age = (2024 - binding.datePickerDOB.year).toString()
 
-        binding.textViewLastName.text = lastName
-        binding.textViewFirstName.text = firstName
-        binding.textViewDOB.text = dob
-        binding.textViewHeight.text = height
+        binding.textViewLastName.text = "성: "+lastName
+        binding.textViewFirstName.text = "이름: "+firstName
+        binding.textViewDOB.text = "생일: "+dob
+        binding.textViewHeight.text = "키: "+height
 
-        // 수정된 값들을 저장하거나 다른 곳으로 전달하는 등의 작업 수행
+
+        // 수정된 값들을 Bundle에 담아 반환
+        val resultIntent = Intent()
+        val bundle = Bundle().apply {
+            putString("lastName", lastName)
+            putString("firstName", firstName)
+            putString("gender", gender)
+            putString("age", age)
+            putString("height", height)
+        }
+        resultIntent.putExtras(bundle)
+        setResult(RESULT_OK, resultIntent)
         Toast.makeText(this, "프로필이 저장되었습니다", Toast.LENGTH_SHORT).show()
     }
 
