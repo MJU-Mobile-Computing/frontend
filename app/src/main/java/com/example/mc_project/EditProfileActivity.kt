@@ -1,16 +1,13 @@
 package com.example.mc_project
 
-
 import android.content.Intent
 import android.os.Bundle
-import android.provider.Telephony.Mms.Intents
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityEditprofileBinding
 
-class EditProfileActivity : AppCompatActivity() {
+class EditProfileActivity : BaseActivity() { // BaseActivity를 상속받도록 수정
 
     private lateinit var binding: ActivityEditprofileBinding
     private var isEditing = false
@@ -19,6 +16,9 @@ class EditProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditprofileBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // 뒤로가기 버튼 추가
+        addBackButton()
 
         // 성별 스피너 설정
         ArrayAdapter.createFromResource(
@@ -41,14 +41,10 @@ class EditProfileActivity : AppCompatActivity() {
 
     private fun setInitialValues() {
         binding.editTextLastName.setText("홍")
-
         binding.editTextFirstName.setText("길동")
-
         binding.spinnerGender.setSelection(0) // 디폴트는 남성으로 설정
-
         binding.textViewDOB.text = "생일: 2000-01-01"
         binding.datePickerDOB.init(2000, 0, 1, null)
-
         binding.textViewHeight.text = "키: 175"
         binding.editTextHeight.setText("175")
     }
@@ -89,11 +85,10 @@ class EditProfileActivity : AppCompatActivity() {
         val height = binding.editTextHeight.text.toString()
         val age = (2024 - binding.datePickerDOB.year).toString()
 
-        binding.textViewLastName.text = "성: "+lastName
-        binding.textViewFirstName.text = "이름: "+firstName
-        binding.textViewDOB.text = "생일: "+dob
-        binding.textViewHeight.text = "키: "+height
-
+        binding.textViewLastName.text = "성: " + lastName
+        binding.textViewFirstName.text = "이름: " + firstName
+        binding.textViewDOB.text = "생일: " + dob
+        binding.textViewHeight.text = "키: " + height
 
         // 수정된 값들을 Bundle에 담아 반환
         val resultIntent = Intent()
@@ -144,4 +139,3 @@ class EditProfileActivity : AppCompatActivity() {
         }
     }
 }
-

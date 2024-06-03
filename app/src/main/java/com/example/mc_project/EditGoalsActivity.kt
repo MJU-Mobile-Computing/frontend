@@ -6,10 +6,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityEditgoalsBinding
 
-class EditGoalsActivity : AppCompatActivity() {
+class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to BaseActivity
 
     private lateinit var binding: ActivityEditgoalsBinding
     private var isEditing = false
@@ -18,6 +17,8 @@ class EditGoalsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityEditgoalsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        // 뒤로가기 버튼 추가
+        addBackButton()
 
         // 목표 스피너 설정
         ArrayAdapter.createFromResource(
@@ -84,15 +85,15 @@ class EditGoalsActivity : AppCompatActivity() {
         val activityLevel = binding.spinnerActivityLevel.selectedItem.toString()
         val goalSteps = binding.editTextGoalSteps.text.toString()
 
-        if (currentWeight == null || currentWeight.toDouble() <= 0) {
+        if (currentWeight.toDoubleOrNull() == null || currentWeight.toDouble() <= 0) {
             Toast.makeText(this, "유효한 현재 몸무게를 입력하세요.", Toast.LENGTH_SHORT).show()
             return
         }
-        if (goalWeight == null || goalWeight.toDouble() <= 0) {
+        if (goalWeight.toDoubleOrNull() == null || goalWeight.toDouble() <= 0) {
             Toast.makeText(this, "유효한 목표 몸무게를 입력하세요.", Toast.LENGTH_SHORT).show()
             return
         }
-        if (goalSteps == null || goalSteps.toDouble() <= 0) {
+        if (goalSteps.toDoubleOrNull() == null || goalSteps.toDouble() <= 0) {
             Toast.makeText(this, "유효한 목표 걸음 수를 입력하세요.", Toast.LENGTH_SHORT).show()
             return
         }
