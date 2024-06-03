@@ -28,7 +28,6 @@ class MyPageActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
         }
 
-
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -76,7 +75,7 @@ class MyPageActivity : AppCompatActivity() {
                     0 // 기본 값
                 }
 
-                // 데이터를 UI에 반영 (예: TextView 등)
+                // 데이터를 UI에 반영
                 binding.textViewGoal.text = "목표: $goal"
                 binding.textViewGoalWeight.text = "목표 몸무게: $goalWeight"
                 binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${recommendedCalories}kcal"

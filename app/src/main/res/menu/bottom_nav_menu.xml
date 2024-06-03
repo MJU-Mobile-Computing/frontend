@@ -1,18 +1,27 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
-        android:id="@+id/navigation_diet"
+        android:id="@+id/nav_diet"
         android:icon="@drawable/ic_diet"
-        android:title="식단 등록" />
+        android:title="식단 등록"
+        app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/navigation_timer"
+        android:id="@+id/nav_timer"
         android:icon="@drawable/ic_timer"
-        android:title="간헐적 단식 타이머" />
+        android:title="단식 타이머"
+        app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/navigation_statistics"
-        android:icon="@drawable/ic_statistics"
-        android:title="먼슬리 통계" />
+        android:id="@+id/nav_report"
+        android:icon="@drawable/ic_report"
+        android:title="먼슬리 보고서"
+        app:showAsAction="ifRoom" />
+
     <item
-        android:id="@+id/navigation_inbody"
-        android:icon="@drawable/ic_inbody"
-        android:title="미니 인바디" />
+        android:id="@+id/nav_pro"
+        android:icon="@drawable/ic_pro"
+        android:title="PRO"
+        app:showAsAction="ifRoom" />
 </menu>
