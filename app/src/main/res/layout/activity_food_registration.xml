@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- activity_food_registration.xml -->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -31,6 +30,30 @@
             android:textSize="16sp"
             android:textColor="#000"
             android:layout_marginEnd="8dp" />
+
+        <!-- 아침 선택된 음식명과 칼로리 텍스트 뷰 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSelectedBreakfastFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택된 음식"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/tvSelectedBreakfastCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="칼로리: 0 kcal"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
 
         <!-- 아침 베너 추가 버튼 -->
         <Button
@@ -69,6 +92,30 @@
             android:textColor="#000"
             android:layout_marginEnd="8dp" />
 
+        <!-- 점심 선택된 음식명과 칼로리 텍스트 뷰 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSelectedLunchFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택된 음식"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/tvSelectedLunchCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="칼로리: 0 kcal"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
+
         <!-- 점심 베너 추가 버튼 -->
         <Button
             android:id="@+id/btnAddLunch"
@@ -106,6 +153,30 @@
             android:textColor="#000"
             android:layout_marginEnd="8dp" />
 
+        <!-- 저녁 선택된 음식명과 칼로리 텍스트 뷰 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSelectedDinnerFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택된 음식"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/tvSelectedDinnerCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="칼로리: 0 kcal"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
+
         <!-- 저녁 베너 추가 버튼 -->
         <Button
             android:id="@+id/btnAddDinner"
@@ -142,6 +213,30 @@
             android:textSize="16sp"
             android:textColor="#000"
             android:layout_marginEnd="8dp" />
+
+        <!-- 간식 선택된 음식명과 칼로리 텍스트 뷰 -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvSelectedSnackFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="선택된 음식"
+                android:textSize="16sp"
+                android:textColor="#000" />
+
+            <TextView
+                android:id="@+id/tvSelectedSnackCalories"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="칼로리: 0 kcal"
+                android:textSize="16sp"
+                android:textColor="#000" />
+        </LinearLayout>
 
         <!-- 간식 베너 추가 버튼 -->
         <Button

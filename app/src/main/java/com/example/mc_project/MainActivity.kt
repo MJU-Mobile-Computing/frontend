@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        setContentView(R.layout.activity_main)
 
         // MaterialToolbar 가져오기
         val topAppBar: MaterialToolbar = findViewById(R.id.topAppBar)

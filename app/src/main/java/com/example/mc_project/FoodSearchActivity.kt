@@ -18,7 +18,6 @@ class FoodSearchActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_search)
 
-
         addBackButton()
 
         val etSearchFood: EditText = findViewById(R.id.etSearchFood)

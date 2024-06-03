@@ -1,20 +1,23 @@
 package com.example.mc_project
+
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMyPageBinding
-import android.content.Intent
 
-class MyPageActivity : AppCompatActivity() {
+class MyPageActivity : BaseActivity() { // BaseActivity를 상속받도록 수정
     lateinit var binding: ActivityMyPageBinding
     private val REQUEST_CODE_EDIT_PROFILE = 1
-    private val REQUEST_CODE_EDIT_GOALS = 1
+    private val REQUEST_CODE_EDIT_GOALS = 2 // REQUEST_CODE_EDIT_GOALS를 고유한 값으로 변경
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 뒤로가기 버튼 추가
+        addBackButton()
 
         // 프로필 정보 설정
         binding.profile.setOnClickListener {
@@ -22,12 +25,13 @@ class MyPageActivity : AppCompatActivity() {
             startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
         }
 
-//        // 목표 설정
+        // 목표 설정
         binding.goals.setOnClickListener {
             val intent = Intent(this, EditGoalsActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
+            startActivityForResult(intent, REQUEST_CODE_EDIT_GOALS) // REQUEST_CODE_EDIT_GOALS 사용
         }
-        //        // 추천 설정
+
+        // 추천 설정
         binding.shareButton.setOnClickListener {
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -37,8 +41,8 @@ class MyPageActivity : AppCompatActivity() {
             val shareTitle = resources.getString(R.string.share_title)
             startActivity(Intent.createChooser(shareIntent, shareTitle))
         }
-
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == Activity.RESULT_OK) {
@@ -50,8 +54,8 @@ class MyPageActivity : AppCompatActivity() {
                 val height = bundle.getString("height")
 
                 binding.profileName.text = "$lastName$firstName"
-                binding.profileAge.text = age +"세"
-                binding.profileHeight.text = height +"cm"
+                binding.profileAge.text = "$age 세"
+                binding.profileHeight.text = "$height cm"
             }
         }
 
@@ -63,14 +67,14 @@ class MyPageActivity : AppCompatActivity() {
                 val activityLevel = bundle.getString("activityLevel")
                 val goalSteps = bundle.getString("goalSteps")
 
-                //일일 권장 칼로리 계산
+                // 일일 권장 칼로리 계산
                 var recommendedCalories = when (activityLevel) {
                     "적음" -> currentWeight?.times(25) ?: 0.0 // Low 활동 수준
                     "보통" -> currentWeight?.times(30) ?: 0.0 // Moderate 활동 수준
                     "많음" -> currentWeight?.times(35) ?: 0.0 // High 활동 수준
                     else -> 0.0 // 기본 값
                 }
-                //목표에 따른 권장 칼로리 수정
+                // 목표에 따른 권장 칼로리 수정
                 recommendedCalories = when (goal) {
                     "체중 감소" -> recommendedCalories - 150
                     "체중 유지" -> recommendedCalories
@@ -78,7 +82,7 @@ class MyPageActivity : AppCompatActivity() {
                     else -> 0.0 // 기본 값
                 }
 
-                //성과 시각화
+                // 성과 시각화
                 val progress = if (currentWeight != null && goalWeight != null && currentWeight > 0) {
                     ((goalWeight / currentWeight) * 100).toInt()
                 } else {

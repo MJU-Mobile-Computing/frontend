@@ -35,13 +35,19 @@
             android:layout_marginStart="16dp" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/listViewSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchAndAskLayout"
+        android:layout_marginTop="16dp"/>
+
     <LinearLayout
         android:id="@+id/searchResultsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:layout_below="@+id/searchAndAskLayout">
+        android:layout_below="@id/listViewSearchResults">
     </LinearLayout>
-
 </RelativeLayout>
