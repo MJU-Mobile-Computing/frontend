@@ -27,6 +27,16 @@ class MyPageActivity : AppCompatActivity() {
             val intent = Intent(this, EditGoalsActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
         }
+        //        // 추천 설정
+        binding.shareButton.setOnClickListener {
+            val shareIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, "Check out this amazing app: [앱 이름]!\nYou can download it from [앱 다운로드 링크].")
+                type = "text/plain"
+            }
+            val shareTitle = resources.getString(R.string.share_title)
+            startActivity(Intent.createChooser(shareIntent, shareTitle))
+        }
 
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
