@@ -35,7 +35,6 @@
 
         <activity android:name=".EditProfileActivity"></activity>
         <activity android:name=".EditGoalsActivity"></activity>
-        <activity android:name=".FoodSearchActivity" />
 
     </application>
 
