@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.mc_project.databinding.ActivityFoodRegistrationBinding
 
-class FoodRegistrationActivity : AppCompatActivity() {
+class FoodRegistrationActivity : BaseActivity() {
 
     private lateinit var binding: ActivityFoodRegistrationBinding
     private var totalCalories = 0
