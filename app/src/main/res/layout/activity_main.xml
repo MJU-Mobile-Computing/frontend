@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,12 +10,6 @@
         android:id="@+id/topAppBar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:fabAlignmentMode="center"
-        app:fabCradleMargin="10dp"
-        app:fabCradleRoundedCornerRadius="20dp"
-        app:fabCradleVerticalOffset="10dp"
-        app:contentInsetStartWithNavigation="0dp"
-        android:layout_gravity="end"
         app:menu="@menu/toolbar_menu">
     </com.google.android.material.appbar.MaterialToolbar>
 
@@ -243,7 +236,7 @@
         android:layout_alignParentBottom="true"
         app:menu="@menu/bottom_nav_menu"
         app:labelVisibilityMode="labeled"
-        app:itemIconTint="@color/nav_item_color"
+        app:itemIconTint="@null"
         app:itemTextColor="@color/nav_item_color"/>
 
 </RelativeLayout>
