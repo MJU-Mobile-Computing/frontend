@@ -13,6 +13,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -41,6 +42,7 @@ android {
 
 dependencies {
 
+    implementation ("androidx.multidex:multidex:2.0.1")
 
     // Retrofit and Gson converter
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
