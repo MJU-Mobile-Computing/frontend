@@ -3,13 +3,20 @@
 package com.example.mc_project
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMainBinding
 import android.content.Intent
+import android.widget.ProgressBar
+import android.widget.TextView
+import com.example.mc_project.models.MainPageResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.appbar.MaterialToolbar // MaterialToolbar를 import
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
     lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,5 +79,69 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+
+        // Fetch data from API using Retrofit
+        fetchDataFromApi()
+    }
+
+    private fun fetchDataFromApi() {
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://43.200.181.134:8080/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        val apiService = retrofit.create(FoodApiService::class.java)
+
+        apiService.getMainPageData().enqueue(object : Callback<MainPageResponse> {
+            override fun onResponse(call: Call<MainPageResponse>, response: Response<MainPageResponse>) {
+                if (response.isSuccessful) {
+                    val mainPageData = response.body()?.data
+                    mainPageData?.let {
+                        updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat)
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<MainPageResponse>, t: Throwable) {
+                t.printStackTrace()
+            }
+        })
+    }
+
+    private fun updateUI(calories: Double, carbs: Double, proteins: Double, fat: Double) {
+        val intakeCaloriesTextView: TextView = findViewById(R.id.tvIntakeValue)
+        val remainingCaloriesTextView: TextView = findViewById(R.id.tvRemainingCalories)
+        val carbsProgressBar: ProgressBar = findViewById(R.id.pbCarbs)
+        val carbsProgressTextView: TextView = findViewById(R.id.tvCarbsProgress)
+        val proteinProgressBar: ProgressBar = findViewById(R.id.pbProtein)
+        val proteinProgressTextView: TextView = findViewById(R.id.tvProteinProgress)
+        val fatProgressBar: ProgressBar = findViewById(R.id.pbFat)
+        val fatProgressTextView: TextView = findViewById(R.id.tvFatProgress)
+        val burnedValueTextView: TextView = findViewById(R.id.tvBurnedValue)
+        val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
+
+        // Assume some burned calories value for demonstration
+        val burnedCalories = 500.0
+        burnedValueTextView.text = burnedCalories.toInt().toString()
+
+        intakeCaloriesTextView.text = calories.toInt().toString()
+        remainingCaloriesTextView.text = "${calories.toInt()} cal"
+
+        carbsProgressBar.progress = carbs.toInt()
+        carbsProgressTextView.text = "${carbs.toInt()}/327g"
+
+        proteinProgressBar.progress = proteins.toInt()
+        proteinProgressTextView.text = "${proteins.toInt()}/131g"
+
+        fatProgressBar.progress = fat.toInt()
+        fatProgressTextView.text = "${fat.toInt()}/87g"
+
+        // Update the circular progress bar
+        val progress = calculateProgress(calories, 2700) // Assuming 2700 is the goal
+        remainingCaloriesProgressBar.progress = progress
+    }
+
+    private fun calculateProgress(current: Double, goal: Int): Int {
+        return ((current / goal) * 100).toInt()
     }
 }

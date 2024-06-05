@@ -2,6 +2,7 @@ package com.example.mc_project
 
 import com.example.mc_project.models.QuestionRequest
 import com.example.mc_project.models.GPTResponse
+import com.example.mc_project.models.MainPageResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -14,4 +15,7 @@ interface FoodApiService {
 
     @POST("api/v1/chat-gpt")
     fun askGPT(@Body question: QuestionRequest): Call<GPTResponse>
+
+    @GET("mainpage")
+    fun getMainPageData(): Call<MainPageResponse>
 }
