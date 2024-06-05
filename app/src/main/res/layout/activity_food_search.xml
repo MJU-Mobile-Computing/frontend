@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -34,10 +35,28 @@
             android:layout_marginStart="16dp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSearchResults"
+    <ListView
+        android:id="@+id/listViewSearchResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/searchAndAskLayout"
         android:layout_marginTop="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/searchResultsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@id/listViewSearchResults">
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnCompleteSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="완료"
+        android:layout_below="@id/searchResultsLayout"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 </RelativeLayout>

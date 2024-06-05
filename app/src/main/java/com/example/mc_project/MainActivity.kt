@@ -18,6 +18,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val FOOD_REGISTRATION_REQUEST_CODE = 101
+    private var intakeCalories = 0.0
+    private val dailyCalorieGoal = 2700.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +58,7 @@ class MainActivity : BaseActivity() {
                 R.id.nav_diet -> {
                     // 식단 등록 기능 실행
                     val intent = Intent(this@MainActivity, FoodRegistrationActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent, FOOD_REGISTRATION_REQUEST_CODE)
                     true
                 }
                 R.id.nav_timer -> {
@@ -84,6 +87,15 @@ class MainActivity : BaseActivity() {
         fetchDataFromApi()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == FOOD_REGISTRATION_REQUEST_CODE && resultCode == RESULT_OK) {
+            val additionalCalories = data?.getIntExtra("totalCalories", 0) ?: 0
+            intakeCalories += additionalCalories
+            updateIntakeAndRemainingCalories()
+        }
+    }
+
     private fun fetchDataFromApi() {
         val retrofit = Retrofit.Builder()
             .baseUrl("http://43.200.181.134:8080/")
@@ -97,7 +109,9 @@ class MainActivity : BaseActivity() {
                 if (response.isSuccessful) {
                     val mainPageData = response.body()?.data
                     mainPageData?.let {
+                        intakeCalories = it.totalCalories
                         updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat)
+                        updateIntakeAndRemainingCalories()
                     }
                 }
             }
@@ -109,8 +123,6 @@ class MainActivity : BaseActivity() {
     }
 
     private fun updateUI(calories: Double, carbs: Double, proteins: Double, fat: Double) {
-        val intakeCaloriesTextView: TextView = findViewById(R.id.tvIntakeValue)
-        val remainingCaloriesTextView: TextView = findViewById(R.id.tvRemainingCalories)
         val carbsProgressBar: ProgressBar = findViewById(R.id.pbCarbs)
         val carbsProgressTextView: TextView = findViewById(R.id.tvCarbsProgress)
         val proteinProgressBar: ProgressBar = findViewById(R.id.pbProtein)
@@ -118,14 +130,10 @@ class MainActivity : BaseActivity() {
         val fatProgressBar: ProgressBar = findViewById(R.id.pbFat)
         val fatProgressTextView: TextView = findViewById(R.id.tvFatProgress)
         val burnedValueTextView: TextView = findViewById(R.id.tvBurnedValue)
-        val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
 
         // Assume some burned calories value for demonstration
         val burnedCalories = 500.0
         burnedValueTextView.text = burnedCalories.toInt().toString()
-
-        intakeCaloriesTextView.text = calories.toInt().toString()
-        remainingCaloriesTextView.text = "${calories.toInt()} cal"
 
         carbsProgressBar.progress = carbs.toInt()
         carbsProgressTextView.text = "${carbs.toInt()}/327g"
@@ -135,13 +143,22 @@ class MainActivity : BaseActivity() {
 
         fatProgressBar.progress = fat.toInt()
         fatProgressTextView.text = "${fat.toInt()}/87g"
+    }
 
-        // Update the circular progress bar
-        val progress = calculateProgress(calories, 2700) // Assuming 2700 is the goal
+    private fun updateIntakeAndRemainingCalories() {
+        val intakeCaloriesTextView: TextView = findViewById(R.id.tvIntakeValue)
+        val remainingCaloriesTextView: TextView = findViewById(R.id.tvRemainingCalories)
+        val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
+
+        intakeCaloriesTextView.text = intakeCalories.toInt().toString()
+        val remainingCalories = dailyCalorieGoal - intakeCalories
+        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
+
+        val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
         remainingCaloriesProgressBar.progress = progress
     }
 
-    private fun calculateProgress(current: Double, goal: Int): Int {
+    private fun calculateProgress(current: Double, goal: Double): Int {
         return ((current / goal) * 100).toInt()
     }
 }
