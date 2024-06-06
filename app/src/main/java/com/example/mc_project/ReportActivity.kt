@@ -50,7 +50,7 @@ class ReportActivity : BaseActivity() {
         println("Predicted weight: $predictedWeight")
 
         // 예제 데이터 생성
-        val weightData = listOf(70f, 72f, 71f, 73f, 75f, 74f) // 최근 6개월 몸무게 데이터
+        val weightData = listOf(90f, 88f, 89f, 88f, 87f, 89f) // 최근 6개월 몸무게 데이터
         val futureWeight = listOf(predictedWeight) // 예측된 몸무게 데이터
 
         // 그래프에 데이터 설정
