@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityFoodSearchBinding
+import com.example.mc_project.models.SearchFoodResponse
+import com.example.mc_project.models.SearchFood
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,8 +28,8 @@ class FoodSearchActivity : AppCompatActivity() {
         val searchResultsLayout = binding.searchResultsLayout
         searchResultsLayout.removeAllViews()
 
-        RetrofitInstance.api.searchFoods(query).enqueue(object : Callback<FoodResponse> {
-            override fun onResponse(call: Call<FoodResponse>, response: Response<FoodResponse>) {
+        RetrofitInstance.api.searchFoods(query).enqueue(object : Callback<SearchFoodResponse> {
+            override fun onResponse(call: Call<SearchFoodResponse>, response: Response<SearchFoodResponse>) {
                 if (response.isSuccessful) {
                     val foods = response.body()?.data?.foods ?: emptyList()
                     for (food in foods) {
@@ -42,10 +44,12 @@ class FoodSearchActivity : AppCompatActivity() {
                             // FoodSearchActivity에서 Intent로 데이터를 전달할 때
                             val selectedFoodIntent = Intent()
                             selectedFoodIntent.putExtra("selectedFood", food.foodName)
-                            selectedFoodIntent.putExtra("calories", food.calories.toInt()) // Double을 Int로 변환하여 전달
+                            selectedFoodIntent.putExtra("calories", food.calories.toInt())
+                            selectedFoodIntent.putExtra("carbohydrates", food.carbohydrates)
+                            selectedFoodIntent.putExtra("proteins", food.protein)
+                            selectedFoodIntent.putExtra("fat", food.fat)
                             setResult(RESULT_OK, selectedFoodIntent)
                             finish()
-
                         }
 
                         searchResultsLayout.addView(foodView)
@@ -53,8 +57,8 @@ class FoodSearchActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: Call<FoodResponse>, t: Throwable) {
-                // Handle API call failure
+            override fun onFailure(call: Call<SearchFoodResponse>, t: Throwable) {
+                // API 호출 실패 처리
             }
         })
     }

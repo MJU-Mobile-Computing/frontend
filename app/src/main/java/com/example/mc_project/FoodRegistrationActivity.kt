@@ -53,16 +53,16 @@ class FoodRegistrationActivity : BaseActivity() {
         if (requestCode == FOOD_SEARCH_REQUEST_CODE && resultCode == RESULT_OK) {
             val selectedFood = data?.getStringExtra("selectedFood")
             val calories = data?.getIntExtra("calories", 0) ?: 0
+            val carbohydrates = data?.getDoubleExtra("carbohydrates", 0.0) ?: 0.0
+            val proteins = data?.getDoubleExtra("proteins", 0.0) ?: 0.0
+            val fat = data?.getDoubleExtra("fat", 0.0) ?: 0.0
             Log.d("FoodRegistration", "Selected Food: $selectedFood, Calories: $calories")
             selectedFood?.let {
                 displaySelectedFood(it, calories)
                 addMealCalories(calories)
 
                 // 음식 등록 API 호출
-                val carbs = "100.1" // 예시 값
-                val proteins = "20.5" // 예시 값
-                val fat = "5.5" // 예시 값
-                registerFood(calories.toString(), carbs, proteins, fat, currentMealType ?: "")
+                registerFood(calories.toString(), carbohydrates.toString(), proteins.toString(), fat.toString(), currentMealType ?: "")
             }
         }
     }
@@ -75,19 +75,19 @@ class FoodRegistrationActivity : BaseActivity() {
 
     private fun displaySelectedFood(selectedFood: String, calories: Int) {
         when (currentMealType) {
-            "breakfast" -> {
+            "아침" -> {
                 binding.tvSelectedBreakfastFood.text = selectedFood
                 binding.tvSelectedBreakfastCalories.text = "칼로리: $calories kcal"
             }
-            "lunch" -> {
+            "점심" -> {
                 binding.tvSelectedLunchFood.text = selectedFood
                 binding.tvSelectedLunchCalories.text = "칼로리: $calories kcal"
             }
-            "dinner" -> {
+            "저녁" -> {
                 binding.tvSelectedDinnerFood.text = selectedFood
                 binding.tvSelectedDinnerCalories.text = "칼로리: $calories kcal"
             }
-            "snack" -> {
+            "간식" -> {
                 binding.tvSelectedSnackFood.text = selectedFood
                 binding.tvSelectedSnackCalories.text = "칼로리: $calories kcal"
             }

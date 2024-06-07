@@ -7,6 +7,7 @@ import com.example.mc_project.models.GPTResponse
 import com.example.mc_project.models.MainPageResponse
 import com.example.mc_project.models.MyPageData
 import com.example.mc_project.models.MyPageResponse
+import com.example.mc_project.models.SearchFoodResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -16,7 +17,7 @@ import retrofit2.http.Query
 
 interface FoodApiService {
     @GET("foods")
-    fun searchFoods(@Query("foodName") foodName: String): Call<FoodResponse>
+    fun searchFoods(@Query("foodName") foodName: String): Call<SearchFoodResponse>
 
     @POST("api/v1/chat-gpt")
     fun askGPT(@Body question: QuestionRequest): Call<GPTResponse>
