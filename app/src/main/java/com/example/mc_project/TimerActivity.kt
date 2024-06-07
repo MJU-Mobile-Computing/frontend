@@ -7,42 +7,49 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mc_project.BaseActivity
-import com.google.android.material.appbar.MaterialToolbar
+import java.text.SimpleDateFormat
 import java.util.*
 
-class TimerActivity : BaseActivity() {
+class TimerActivity : AppCompatActivity() {
 
     private lateinit var timerTextView: TextView
     private lateinit var ssButton: Button
     private lateinit var resetButton: Button
     private lateinit var timerIcon: ImageView
+    private lateinit var startTimeTextView: TextView
+    private lateinit var endTimeTextView: TextView
 
     private var isRunning = false
     private var timeLeftInMillis: Long = 7200000 // 2 hours in milliseconds
     private lateinit var countDownTimer: CountDownTimer
+    private var startTime: Long = 0
+    private var endTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
-        addBackButton()
-
         timerTextView = findViewById(R.id.timer)
         ssButton = findViewById(R.id.ssbutton)
         resetButton = findViewById(R.id.resetButton)
         timerIcon = findViewById(R.id.timerIcon)
+        startTimeTextView = findViewById(R.id.startTimeTextView)
+        endTimeTextView = findViewById(R.id.endTimeTextView)
 
         ssButton.setOnClickListener {
             if (isRunning) {
                 pauseTimer()
             } else {
                 startTimer()
+                startTime = System.currentTimeMillis()
+                updateStartTime()
             }
         }
 
         resetButton.setOnClickListener {
             resetTimer()
+            endTime = System.currentTimeMillis()
+            updateEndTime()
         }
 
         updateCountDownText()
@@ -85,18 +92,20 @@ class TimerActivity : BaseActivity() {
         timerIcon.setImageResource(R.drawable.ic_egg2) // 리셋 시 이미지 변경
     }
 
-    private fun showTimePickerDialog() {
+    private fun updateStartTime() {
         val calendar = Calendar.getInstance()
-        val hour = calendar.get(Calendar.HOUR_OF_DAY)
-        val minute = calendar.get(Calendar.MINUTE)
+        calendar.timeInMillis = startTime
+        val startTimeFormatted = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(calendar.time)
+        startTimeTextView.text = "시작 시간: $startTimeFormatted"
+        startTimeTextView.visibility = TextView.VISIBLE
+    }
 
-        val timePickerDialog = TimePickerDialog(this, { _, selectedHour, selectedMinute ->
-            val selectedTimeInMillis = (selectedHour * 3600 + selectedMinute * 60) * 1000L
-            timeLeftInMillis = selectedTimeInMillis
-            resetTimer()
-        }, hour, minute, true)
-
-        timePickerDialog.show()
+    private fun updateEndTime() {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = endTime
+        val endTimeFormatted = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(calendar.time)
+        endTimeTextView.text = "종료 시간: $endTimeFormatted"
+        endTimeTextView.visibility = TextView.VISIBLE
     }
 
     private fun updateCountDownText() {

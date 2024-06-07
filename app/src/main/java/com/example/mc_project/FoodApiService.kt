@@ -1,5 +1,7 @@
 package com.example.mc_project
 
+import com.example.mc_project.models.ExerciseRegistrationRequest
+import com.example.mc_project.models.ExerciseRegistrationResponse
 import com.example.mc_project.models.FoodRegistrationRequest
 import com.example.mc_project.models.FoodRegistrationResponse
 import com.example.mc_project.models.QuestionRequest
@@ -33,4 +35,7 @@ interface FoodApiService {
 
     @POST("foods/register")
     fun registerFood(@Body request: FoodRegistrationRequest): Call<FoodRegistrationResponse>
+
+    @POST("exercise/register")
+    fun registerExercise(@Body request: ExerciseRegistrationRequest): Call<ExerciseRegistrationResponse>
 }
