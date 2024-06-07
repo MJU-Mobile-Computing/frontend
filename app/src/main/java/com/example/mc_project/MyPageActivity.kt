@@ -1,37 +1,41 @@
 package com.example.mc_project
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMyPageBinding
+import com.example.mc_project.models.MyPageData
+import com.example.mc_project.models.MyPageResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.Calendar
 
-class MyPageActivity : BaseActivity() { // BaseActivity를 상속받도록 수정
+class MyPageActivity : BaseActivity() {
     lateinit var binding: ActivityMyPageBinding
     private val REQUEST_CODE_EDIT_PROFILE = 1
-    private val REQUEST_CODE_EDIT_GOALS = 2 // REQUEST_CODE_EDIT_GOALS를 고유한 값으로 변경
+    private val REQUEST_CODE_EDIT_GOALS = 2
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMyPageBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 뒤로가기 버튼 추가
         addBackButton()
 
-        // 프로필 정보 설정
+        // 프로필 및 목표 정보 설정
+        fetchMyPageData()
+
         binding.profile.setOnClickListener {
             val intent = Intent(this, EditProfileActivity::class.java)
             startActivityForResult(intent, REQUEST_CODE_EDIT_PROFILE)
         }
 
-        // 목표 설정
         binding.goals.setOnClickListener {
             val intent = Intent(this, EditGoalsActivity::class.java)
-            startActivityForResult(intent, REQUEST_CODE_EDIT_GOALS) // REQUEST_CODE_EDIT_GOALS 사용
+            startActivityForResult(intent, REQUEST_CODE_EDIT_GOALS)
         }
 
-        // 추천 설정
         binding.shareButton.setOnClickListener {
             val shareIntent = Intent().apply {
                 action = Intent.ACTION_SEND
@@ -43,60 +47,57 @@ class MyPageActivity : BaseActivity() { // BaseActivity를 상속받도록 수�
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_EDIT_PROFILE && resultCode == Activity.RESULT_OK) {
-            data?.extras?.let { bundle ->
-                val lastName = bundle.getString("lastName")
-                val firstName = bundle.getString("firstName")
-                val gender = bundle.getString("gender")
-                val age = bundle.getString("age")
-                val height = bundle.getString("height")
-
-                binding.profileName.text = "$lastName$firstName"
-                binding.profileAge.text = "$age 세"
-                binding.profileHeight.text = "$height cm"
+    private fun fetchMyPageData() {
+        RetrofitInstance.api.getMyPageData().enqueue(object : Callback<MyPageResponse> {
+            override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
+                if (response.isSuccessful) {
+                    response.body()?.let {
+                        val data = it.data
+                        binding.profileName.text = "${data.lastname} ${data.firstname}"
+                        binding.profileAge.text = "${calculateAge(data.birthdate)} 세"
+                        binding.profileHeight.text = "${data.height} cm"
+                        binding.textViewGoal.text = "목표: ${data.goal}"
+                        binding.textViewGoalWeight.text = "목표 몸무게: ${data.goalWeight} kg"
+                        binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${calculateRecommendedCalories(data)} kcal"
+                        binding.textViewGoalSteps.text = "걸음 목표: ${data.goalSteps}"
+                        binding.progressBar.progress = calculateProgress(data.weight, data.goalWeight)
+                        binding.TextViewPrograss.text = "${calculateProgress(data.weight, data.goalWeight)}%"
+                    }
+                }
             }
-        }
 
-        if (requestCode == REQUEST_CODE_EDIT_GOALS && resultCode == Activity.RESULT_OK) {
-            data?.extras?.let { bundle ->
-                val goal = bundle.getString("goal")
-                val currentWeight = bundle.getString("currentWeight")?.toDoubleOrNull()
-                val goalWeight = bundle.getString("goalWeight")?.toDoubleOrNull()
-                val activityLevel = bundle.getString("activityLevel")
-                val goalSteps = bundle.getString("goalSteps")
-
-                // 일일 권장 칼로리 계산
-                var recommendedCalories = when (activityLevel) {
-                    "적음" -> currentWeight?.times(25) ?: 0.0 // Low 활동 수준
-                    "보통" -> currentWeight?.times(30) ?: 0.0 // Moderate 활동 수준
-                    "많음" -> currentWeight?.times(35) ?: 0.0 // High 활동 수준
-                    else -> 0.0 // 기본 값
-                }
-                // 목표에 따른 권장 칼로리 수정
-                recommendedCalories = when (goal) {
-                    "체중 감소" -> recommendedCalories - 150
-                    "체중 유지" -> recommendedCalories
-                    "체중 증량" -> recommendedCalories + 150
-                    else -> 0.0 // 기본 값
-                }
-
-                // 성과 시각화
-                val progress = if (currentWeight != null && goalWeight != null && currentWeight > 0) {
-                    ((goalWeight / currentWeight) * 100).toInt()
-                } else {
-                    0 // 기본 값
-                }
-
-                // 데이터를 UI에 반영
-                binding.textViewGoal.text = "목표: $goal"
-                binding.textViewGoalWeight.text = "목표 몸무게: $goalWeight"
-                binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${recommendedCalories}kcal"
-                binding.textViewGoalSteps.text = "걸음 목표: $goalSteps"
-                binding.progressBar.progress = progress
-                binding.TextViewPrograss.text = "$progress%"
+            override fun onFailure(call: Call<MyPageResponse>, t: Throwable) {
+                // Handle API call failure
             }
+        })
+    }
+
+    private fun calculateAge(birthdate: String): Int {
+        val birthYear = birthdate.split("-")[0].toInt()
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        return currentYear - birthYear
+    }
+
+    private fun calculateRecommendedCalories(data: MyPageData): Double {
+        val activityMultiplier = when (data.amountOfActivity) {
+            "적음" -> 25.0
+            "보통" -> 30.0
+            "많음" -> 35.0
+            else -> 0.0
         }
+        var recommendedCalories = data.weight.replace("kg", "").toDoubleOrNull() ?: 0.0 * activityMultiplier
+        recommendedCalories = when (data.goal) {
+            "체중 감소" -> recommendedCalories - 150
+            "체중 유지" -> recommendedCalories
+            "체중 증량" -> recommendedCalories + 150
+            else -> 0.0
+        }
+        return recommendedCalories
+    }
+
+    private fun calculateProgress(currentWeight: String, goalWeight: String): Int {
+        val current = currentWeight.replace("kg", "").toDoubleOrNull() ?: 0.0
+        val goal = goalWeight.replace("kg", "").toDoubleOrNull() ?: 0.0
+        return if (current > 0) ((goal / current) * 100).toInt() else 0
     }
 }

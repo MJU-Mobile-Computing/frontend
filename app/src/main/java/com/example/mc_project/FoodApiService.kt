@@ -3,6 +3,7 @@ package com.example.mc_project
 import com.example.mc_project.models.QuestionRequest
 import com.example.mc_project.models.GPTResponse
 import com.example.mc_project.models.MainPageResponse
+import com.example.mc_project.models.MyPageResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -18,4 +19,7 @@ interface FoodApiService {
 
     @GET("mainpage")
     fun getMainPageData(): Call<MainPageResponse>
+
+    @GET("mypage")
+    fun getMyPageData(): Call<MyPageResponse>
 }
