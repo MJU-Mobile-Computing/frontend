@@ -1,5 +1,6 @@
 package com.example.mc_project
 
+import com.example.mc_project.models.ApiResponse
 import com.example.mc_project.models.ExerciseRegistrationRequest
 import com.example.mc_project.models.ExerciseRegistrationResponse
 import com.example.mc_project.models.FoodRegistrationRequest
@@ -10,6 +11,8 @@ import com.example.mc_project.models.MainPageResponse
 import com.example.mc_project.models.MyPageData
 import com.example.mc_project.models.MyPageResponse
 import com.example.mc_project.models.SearchFoodResponse
+import com.google.gson.JsonObject
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -38,4 +41,7 @@ interface FoodApiService {
 
     @POST("exercise/register")
     fun registerExercise(@Body request: ExerciseRegistrationRequest): Call<ExerciseRegistrationResponse>
+
+    @POST("bookmark/register")
+    fun bookmarkFood(@Body jsonObject: JsonObject): Call<ApiResponse>
 }

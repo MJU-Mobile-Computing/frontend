@@ -3,12 +3,14 @@ package com.example.mc_project
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityFoodSearchBinding
+import com.example.mc_project.models.ApiResponse
 import com.example.mc_project.models.SearchFoodResponse
-import com.example.mc_project.models.SearchFood
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -44,6 +46,7 @@ class FoodSearchActivity : AppCompatActivity() {
                         val foodView = LayoutInflater.from(this@FoodSearchActivity).inflate(R.layout.food_item, searchResultsLayout, false)
                         val tvFoodName: TextView = foodView.findViewById(R.id.tvFoodName)
                         val tvFoodCalories: TextView = foodView.findViewById(R.id.tvFoodCalories)
+                        val btnBookmark: Button = foodView.findViewById(R.id.btnBookmark)
 
                         tvFoodName.text = food.foodName
                         tvFoodCalories.text = "${food.calories} 칼로리"
@@ -60,6 +63,10 @@ class FoodSearchActivity : AppCompatActivity() {
                             finish()
                         }
 
+                        btnBookmark.setOnClickListener {
+                            bookmarkFood(food.id)
+                        }
+
                         searchResultsLayout.addView(foodView)
                     }
                 }
@@ -67,6 +74,26 @@ class FoodSearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<SearchFoodResponse>, t: Throwable) {
                 // API 호출 실패 처리
+            }
+        })
+    }
+
+    private fun bookmarkFood(foodId: Int) {
+        val jsonObject = JsonObject().apply {
+            addProperty("foodId", foodId)
+        }
+
+        RetrofitInstance.api.bookmarkFood(jsonObject).enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful) {
+                    showToast("Bookmark added successfully")
+                } else {
+                    showToast("Failed to add bookmark")
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                showToast("Failed to add bookmark")
             }
         })
     }
