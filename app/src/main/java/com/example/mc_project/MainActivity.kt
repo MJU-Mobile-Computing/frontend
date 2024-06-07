@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.example.mc_project
 
 import android.os.Bundle
@@ -20,6 +18,7 @@ class MainActivity : BaseActivity() {
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
     private var intakeCalories = 0.0
+    private var burnedCalories = 0 // 소비량 변수 추가
     private val dailyCalorieGoal = 2700.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -110,7 +109,8 @@ class MainActivity : BaseActivity() {
                     val mainPageData = response.body()?.data
                     mainPageData?.let {
                         intakeCalories = it.totalCalories
-                        updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat)
+                        burnedCalories = it.totalBurnedCalories.toInt() // 소비량 업데이트
+                        updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat, it.totalBurnedCalories)
                         updateIntakeAndRemainingCalories()
                     }
                 }
@@ -122,7 +122,7 @@ class MainActivity : BaseActivity() {
         })
     }
 
-    private fun updateUI(calories: Double, carbs: Double, proteins: Double, fat: Double) {
+    private fun updateUI(calories: Double, carbs: Double, proteins: Double, fat: Double, burned: Long) {
         val carbsProgressBar: ProgressBar = findViewById(R.id.pbCarbs)
         val carbsProgressTextView: TextView = findViewById(R.id.tvCarbsProgress)
         val proteinProgressBar: ProgressBar = findViewById(R.id.pbProtein)
@@ -131,9 +131,7 @@ class MainActivity : BaseActivity() {
         val fatProgressTextView: TextView = findViewById(R.id.tvFatProgress)
         val burnedValueTextView: TextView = findViewById(R.id.tvBurnedValue)
 
-        // Assume some burned calories value for demonstration
-        val burnedCalories = 500.0
-        burnedValueTextView.text = burnedCalories.toInt().toString()
+        burnedValueTextView.text = burned.toString()
 
         carbsProgressBar.progress = carbs.toInt()
         carbsProgressTextView.text = "${carbs.toInt()}/327g"
@@ -151,7 +149,7 @@ class MainActivity : BaseActivity() {
         val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
 
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
-        val remainingCalories = dailyCalorieGoal - intakeCalories
+        val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories // 소비량을 고려하여 남은 칼로리 계산
         remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
 
         val progress = calculateProgress(remainingCalories, dailyCalorieGoal)

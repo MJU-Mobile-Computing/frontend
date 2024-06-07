@@ -98,7 +98,7 @@
                 android:id="@+id/tvBurnedLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="소비량"
+                android:text="운동\n시간"
                 android:textColor="#000"
                 android:textSize="25sp" />
 
