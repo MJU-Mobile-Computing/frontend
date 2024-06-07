@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimerActivity : AppCompatActivity() {
+class TimerActivity : BaseActivity() {
 
     private lateinit var timerTextView: TextView
     private lateinit var ssButton: Button
@@ -28,6 +28,8 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+
+        addBackButton()
 
         timerTextView = findViewById(R.id.timer)
         ssButton = findViewById(R.id.ssbutton)
