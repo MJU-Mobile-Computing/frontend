@@ -1,5 +1,7 @@
 package com.example.mc_project
 
+import com.example.mc_project.models.FoodRegistrationRequest
+import com.example.mc_project.models.FoodRegistrationResponse
 import com.example.mc_project.models.QuestionRequest
 import com.example.mc_project.models.GPTResponse
 import com.example.mc_project.models.MainPageResponse
@@ -27,4 +29,7 @@ interface FoodApiService {
 
     @PATCH("mypage")
     fun updateMyPageData(@Body data: MyPageData): Call<MyPageResponse>
+
+    @POST("foods/register")
+    fun registerFood(@Body request: FoodRegistrationRequest): Call<FoodRegistrationResponse>
 }

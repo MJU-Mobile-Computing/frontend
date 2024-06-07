@@ -7,6 +7,11 @@ import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityFoodRegistrationBinding
+import com.example.mc_project.models.FoodRegistrationRequest
+import com.example.mc_project.models.FoodRegistrationResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class FoodRegistrationActivity : BaseActivity() {
 
@@ -27,10 +32,10 @@ class FoodRegistrationActivity : BaseActivity() {
         // 뒤로가기 버튼 추가
         addBackButton()
 
-        binding.btnAddBreakfast.setOnClickListener { openFoodSearchActivity("breakfast") }
-        binding.btnAddLunch.setOnClickListener { openFoodSearchActivity("lunch") }
-        binding.btnAddDinner.setOnClickListener { openFoodSearchActivity("dinner") }
-        binding.btnAddSnack.setOnClickListener { openFoodSearchActivity("snack") }
+        binding.btnAddBreakfast.setOnClickListener { openFoodSearchActivity("아침") }
+        binding.btnAddLunch.setOnClickListener { openFoodSearchActivity("점심") }
+        binding.btnAddDinner.setOnClickListener { openFoodSearchActivity("저녁") }
+        binding.btnAddSnack.setOnClickListener { openFoodSearchActivity("간식") }
 
         binding.btnDone.setOnClickListener {
             val resultIntent = Intent()
@@ -52,6 +57,12 @@ class FoodRegistrationActivity : BaseActivity() {
             selectedFood?.let {
                 displaySelectedFood(it, calories)
                 addMealCalories(calories)
+
+                // 음식 등록 API 호출
+                val carbs = "100.1" // 예시 값
+                val proteins = "20.5" // 예시 값
+                val fat = "5.5" // 예시 값
+                registerFood(calories.toString(), carbs, proteins, fat, currentMealType ?: "")
             }
         }
     }
@@ -87,5 +98,24 @@ class FoodRegistrationActivity : BaseActivity() {
         totalCalories += calories
         // 총 칼로리를 표시하는 TextView를 업데이트
         binding.tvTotalCalories.text = "총 칼로리: $totalCalories kcal"
+    }
+
+    private fun registerFood(calories: String, carbs: String, proteins: String, fat: String, mealType: String) {
+        val request = FoodRegistrationRequest(calories, carbs, proteins, fat, mealType)
+        RetrofitInstance.api.registerFood(request).enqueue(object : Callback<FoodRegistrationResponse> {
+            override fun onResponse(call: Call<FoodRegistrationResponse>, response: Response<FoodRegistrationResponse>) {
+                if (response.isSuccessful) {
+                    val message = response.body()?.data?.message ?: "Unknown response"
+                    Log.d("FoodRegistration", message)
+                    // 성공적인 응답 처리 (예: UI 업데이트 또는 메시지 표시)
+                } else {
+                    Log.e("FoodRegistration", "Failed to register food: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<FoodRegistrationResponse>, t: Throwable) {
+                Log.e("FoodRegistration", "API call failed", t)
+            }
+        })
     }
 }
