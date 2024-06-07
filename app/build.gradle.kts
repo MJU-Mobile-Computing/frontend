@@ -52,8 +52,9 @@ dependencies {
     // MatPlot
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
+    //calendarview
+    implementation ("com.github.prolificinteractive:material-calendarview:2.0.1")
 
-    
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

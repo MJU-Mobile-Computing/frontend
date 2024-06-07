@@ -1,26 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@color/white">
+    <TextView
+        android:id="@+id/recommendedCaloriesTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="목표 권장 소비량: 2000 kcal"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"/>
 
-    <CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:mcv_showOtherDates="all"
+        app:mcv_selectionColor="@color/teal_200"
+        app:mcv_tileWidth="40dp"
+        app:mcv_tileHeight="40dp"
+        tools:ignore="MissingClass" />
 
-    <EditText
-        android:id="@+id/editText"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/teal_200"
-        android:lines="10"/>
+        android:text="총 칼로리 입력"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTextCalories"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:inputType="number"
+        android:hint="예: 1500"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="공복 시 체중 입력"
+        android:textSize="16sp"
+        android:layout_marginBottom="8dp"/>
+
+    <EditText
+        android:id="@+id/editTextWeight"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edit_text_background"
+        android:inputType="numberDecimal"
+        android:hint="예: 70.5"
+        android:padding="12dp"
+        android:layout_marginBottom="16dp"/>
 
     <Button
         android:id="@+id/btnSmt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/submit"/>
+        android:text="@string/submit"
+        android:backgroundTint="@color/teal_200"
+        android:textColor="@android:color/white"
+        android:padding="12dp"
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
 </LinearLayout>
-
-
