@@ -5,8 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityFoodRegistrationBinding
+import com.example.mc_project.models.ExerciseRegistrationRequest
+import com.example.mc_project.models.ExerciseRegistrationResponse
 import com.example.mc_project.models.FoodRegistrationRequest
 import com.example.mc_project.models.FoodRegistrationResponse
 import retrofit2.Call
@@ -37,14 +40,14 @@ class FoodRegistrationActivity : BaseActivity() {
         binding.btnAddDinner.setOnClickListener { openFoodSearchActivity("저녁") }
         binding.btnAddSnack.setOnClickListener { openFoodSearchActivity("간식") }
 
-        binding.btnDone.setOnClickListener {
-            val resultIntent = Intent()
-            resultIntent.putExtra("totalCalories", totalCalories)
-            resultIntent.putExtra("totalCarbs", totalCarbs)
-            resultIntent.putExtra("totalProteins", totalProteins)
-            resultIntent.putExtra("totalFats", totalFats)
-            setResult(Activity.RESULT_OK, resultIntent)
-            finish()
+
+        binding.btnRegisterExercise.setOnClickListener {
+            val exerciseHour = binding.etExerciseHour.text.toString()
+            if (exerciseHour.isNotEmpty()) {
+                registerExercise(exerciseHour)
+            } else {
+                Toast.makeText(this, "운동 시간을 입력하세요", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -115,6 +118,25 @@ class FoodRegistrationActivity : BaseActivity() {
 
             override fun onFailure(call: Call<FoodRegistrationResponse>, t: Throwable) {
                 Log.e("FoodRegistration", "API call failed", t)
+            }
+        })
+    }
+
+    private fun registerExercise(exerciseHour: String) {
+        val request = ExerciseRegistrationRequest(exerciseHour)
+        RetrofitInstance.api.registerExercise(request).enqueue(object : Callback<ExerciseRegistrationResponse> {
+            override fun onResponse(call: Call<ExerciseRegistrationResponse>, response: Response<ExerciseRegistrationResponse>) {
+                if (response.isSuccessful) {
+                    val message = response.body()?.data?.message ?: "Unknown response"
+                    Log.d("ExerciseRegistration", message)
+                    // 성공적인 응답 처리 (예: UI 업데이트 또는 메시지 표시)
+                } else {
+                    Log.e("ExerciseRegistration", "Failed to register exercise: ${response.errorBody()?.string()}")
+                }
+            }
+
+            override fun onFailure(call: Call<ExerciseRegistrationResponse>, t: Throwable) {
+                Log.e("ExerciseRegistration", "API call failed", t)
             }
         })
     }
