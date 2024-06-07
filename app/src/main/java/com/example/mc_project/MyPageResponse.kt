@@ -11,14 +11,15 @@ data class MyPageResponse(
 )
 
 data class MyPageData(
-    @SerializedName("firstname") val firstname: String,
-    @SerializedName("lastname") val lastname: String,
-    @SerializedName("gender") val gender: String,
-    @SerializedName("birthdate") val birthdate: String,
-    @SerializedName("height") val height: String,
-    @SerializedName("goal") val goal: String,
-    @SerializedName("weight") val weight: String,
-    @SerializedName("amountOfActivity") val amountOfActivity: String,
-    @SerializedName("goalWeight") val goalWeight: String,
-    @SerializedName("goalSteps") val goalSteps: String
+    @SerializedName("firstname") val firstname: String?,
+    @SerializedName("lastname") val lastname: String?,
+    @SerializedName("gender") val gender: String?,
+    @SerializedName("birthdate") val birthdate: String?,
+    @SerializedName("height") val height: String?,
+    @SerializedName("goal") val goal: String?,
+    @SerializedName("weight") val weight: String?,
+    @SerializedName("amountOfActivity") val amountOfActivity: String?,
+    @SerializedName("goalWeight") val goalWeight: String?,
+    @SerializedName("goalSteps") val goalSteps: String?
 )
+

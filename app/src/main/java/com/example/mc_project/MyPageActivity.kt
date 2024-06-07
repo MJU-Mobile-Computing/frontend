@@ -1,7 +1,9 @@
 package com.example.mc_project
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMyPageBinding
 import com.example.mc_project.models.MyPageData
@@ -22,8 +24,6 @@ class MyPageActivity : BaseActivity() {
         setContentView(binding.root)
 
         addBackButton()
-
-        // 프로필 및 목표 정보 설정
         fetchMyPageData()
 
         binding.profile.setOnClickListener {
@@ -47,6 +47,31 @@ class MyPageActivity : BaseActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            data?.extras?.let { bundle ->
+                if (requestCode == REQUEST_CODE_EDIT_PROFILE) {
+                    val lastName = bundle.getString("lastName")
+                    val firstName = bundle.getString("firstName")
+                    val gender = bundle.getString("gender")
+                    val dob = bundle.getString("dob")
+                    val height = bundle.getString("height")
+
+                    updateMyPageData(MyPageData(firstName, lastName, gender, dob, height, null, null, null, null, null))
+                } else if (requestCode == REQUEST_CODE_EDIT_GOALS) {
+                    val goal = bundle.getString("goal")
+                    val currentWeight = bundle.getString("currentWeight")
+                    val goalWeight = bundle.getString("goalWeight")
+                    val activityLevel = bundle.getString("activityLevel")
+                    val goalSteps = bundle.getString("goalSteps")
+
+                    updateMyPageData(MyPageData(null, null, null, null, null, goal, currentWeight, activityLevel, goalWeight, goalSteps))
+                }
+            }
+        }
+    }
+
     private fun fetchMyPageData() {
         RetrofitInstance.api.getMyPageData().enqueue(object : Callback<MyPageResponse> {
             override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
@@ -54,7 +79,6 @@ class MyPageActivity : BaseActivity() {
                     response.body()?.let {
                         val data = it.data
                         binding.profileName.text = "${data.lastname} ${data.firstname}"
-                        binding.profileAge.text = "${calculateAge(data.birthdate)} 세"
                         binding.profileHeight.text = "${data.height} cm"
                         binding.textViewGoal.text = "목표: ${data.goal}"
                         binding.textViewGoalWeight.text = "목표 몸무게: ${data.goalWeight} kg"
@@ -72,6 +96,21 @@ class MyPageActivity : BaseActivity() {
         })
     }
 
+    private fun updateMyPageData(data: MyPageData) {
+        RetrofitInstance.api.updateMyPageData(data).enqueue(object : Callback<MyPageResponse> {
+            override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@MyPageActivity, "정보가 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show()
+                    fetchMyPageData() // 업데이트된 정보 다시 불러오기
+                }
+            }
+
+            override fun onFailure(call: Call<MyPageResponse>, t: Throwable) {
+                Toast.makeText(this@MyPageActivity, "정보 업데이트에 실패했습니다.", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
     private fun calculateAge(birthdate: String): Int {
         val birthYear = birthdate.split("-")[0].toInt()
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
@@ -85,7 +124,7 @@ class MyPageActivity : BaseActivity() {
             "많음" -> 35.0
             else -> 0.0
         }
-        var recommendedCalories = data.weight.replace("kg", "").toDoubleOrNull() ?: 0.0 * activityMultiplier
+        var recommendedCalories = (data.weight?.replace("kg", "")?.toDoubleOrNull() ?: 0.0) * activityMultiplier
         recommendedCalories = when (data.goal) {
             "체중 감소" -> recommendedCalories - 150
             "체중 유지" -> recommendedCalories
@@ -95,9 +134,9 @@ class MyPageActivity : BaseActivity() {
         return recommendedCalories
     }
 
-    private fun calculateProgress(currentWeight: String, goalWeight: String): Int {
-        val current = currentWeight.replace("kg", "").toDoubleOrNull() ?: 0.0
-        val goal = goalWeight.replace("kg", "").toDoubleOrNull() ?: 0.0
+    private fun calculateProgress(currentWeight: String?, goalWeight: String?): Int {
+        val current = currentWeight?.replace("kg", "")?.toDoubleOrNull() ?: 0.0
+        val goal = goalWeight?.replace("kg", "")?.toDoubleOrNull() ?: 0.0
         return if (current > 0) ((goal / current) * 100).toInt() else 0
     }
 }
