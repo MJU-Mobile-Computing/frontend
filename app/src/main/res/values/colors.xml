@@ -8,4 +8,16 @@
     <color name="teal_200">#FF80CBC4</color>
     <color name="dark_green">#00FF99</color>
     <color name="dark_red">#FF9999</color>
+    <color name="my_primary">#6200EE</color> <!-- Primary 색상 -->
+    <color name="my_primary_variant">#3700B3</color> <!-- Primary variant -->
+    <color name="my_secondary">#03DAC6</color> <!-- Secondary 색상 -->
+    <color name="my_secondary_variant">#018786</color> <!-- Secondary variant -->
+    <color name="my_background">#FFFFFF</color> <!-- 배경 색상 -->
+    <color name="my_surface">#FFFFFF</color> <!-- Surface 색상 -->
+    <color name="my_error">#B00020</color> <!-- Error 색상 -->
+    <color name="my_on_primary">#FFFFFF</color> <!-- Primary 텍스트 색상 -->
+    <color name="my_on_secondary">#000000</color> <!-- Secondary 텍스트 색상 -->
+    <color name="my_on_background">#000000</color> <!-- 배경 텍스트 색상 -->
+    <color name="my_on_surface">#000000</color> <!-- Surface 텍스트 색상 -->
+    <color name="my_on_error">#FFFFFF</color> <!-- Error 텍스트 색상 -->
 </resources>

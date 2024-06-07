@@ -236,7 +236,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="친구에게 앱 공유"
-                        android:onClick="onShareButtonClick"/>
+                        android:onClick="onShareButtonClick"
+                        android:theme="@style/CustomButton"/>
                 </LinearLayout>
             </FrameLayout>
         </LinearLayout>

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MC_Project</string>
+    <string name="app_name">HealthCare</string>
     <string name="share_title">앱 공유하기</string>
     <string-array name="gender_array">
         <item>남자</item>

@@ -60,7 +60,8 @@
             android:id="@+id/btnAddBreakfast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:theme="@style/CustomButton" />
     </LinearLayout>
 
     <!-- 점심 베너 -->
@@ -121,7 +122,8 @@
             android:id="@+id/btnAddLunch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:theme="@style/CustomButton" />
     </LinearLayout>
 
     <!-- 저녁 베너 -->
@@ -182,7 +184,8 @@
             android:id="@+id/btnAddDinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:theme="@style/CustomButton" />
     </LinearLayout>
 
     <!-- 간식 베너 -->
@@ -243,7 +246,8 @@
             android:id="@+id/btnAddSnack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:theme="@style/CustomButton" />
     </LinearLayout>
 
     <!-- 총 칼로리 표시 -->
@@ -360,5 +364,7 @@
         android:text="완료"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        android:theme="@style/CustomButton"/>
 </RelativeLayout>
+

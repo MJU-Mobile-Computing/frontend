@@ -33,7 +33,7 @@
     <LinearLayout
         android:id="@+id/timerLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/subtitle"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
@@ -79,21 +79,23 @@
             android:layout_marginBottom="16dp"
             android:padding="12dp"
             android:text="단식 시작하기"
-            android:textColor="#FFFFFF" />
+            android:textColor="#FFFFFF"
+            android:theme="@style/CustomButton" /> <!-- 커스텀 테마 적용 -->
 
+        <Button
+            android:id="@+id/resetButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timerLayout"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="8dp"
+            android:padding="12dp"
+            android:text="리셋"
+            android:textColor="#FFFFFF"
+            android:theme="@style/CustomButton" /> <!-- 커스텀 테마 적용 -->
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/resetButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/timerLayout"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
-        android:padding="12dp"
-        android:text="리셋"
-        android:textColor="#FFFFFF" />
 
 
 </RelativeLayout>
