@@ -3,12 +3,11 @@ package com.example.mc_project
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.mc_project.databinding.ActivityEditgoalsBinding
 
-class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to BaseActivity
+class EditGoalsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityEditgoalsBinding
     private var isEditing = false
@@ -17,10 +16,8 @@ class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to 
         super.onCreate(savedInstanceState)
         binding = ActivityEditgoalsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        // 뒤로가기 버튼 추가
         addBackButton()
 
-        // 목표 스피너 설정
         ArrayAdapter.createFromResource(
             this,
             R.array.mygoal_array,
@@ -30,7 +27,6 @@ class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to 
             binding.spinnerGoal.adapter = adapter
         }
 
-        // 활동 수준 스피너 설정
         ArrayAdapter.createFromResource(
             this,
             R.array.activity_array,
@@ -40,17 +36,14 @@ class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to 
             binding.spinnerActivityLevel.adapter = adapter
         }
 
-        // 초기 입력값 설정
         setInitialValues()
 
-        // 수정 버튼 클릭 시
         binding.buttonEdit.setOnClickListener {
             toggleEditMode()
         }
     }
 
     private fun setInitialValues() {
-        // 예시 값을 설정합니다. 실제로는 전달된 인텐트 데이터로 설정할 수 있습니다.
         binding.editTextCurrentWeight.setText("70")
         binding.editTextGoalWeight.setText("65")
         binding.editTextGoalSteps.setText("10000")
@@ -98,7 +91,6 @@ class EditGoalsActivity : BaseActivity() { // Changed from AppCompatActivity to 
             return
         }
 
-        // 저장된 값들을 Bundle에 담아 반환
         val resultIntent = Intent()
         val bundle = Bundle().apply {
             putString("goal", goal)
