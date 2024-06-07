@@ -1,10 +1,13 @@
 package com.example.mc_project
 
+import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.models.QuestionRequest
 import com.example.mc_project.models.GPTResponse
@@ -26,7 +29,12 @@ class ChatGPTActivity : BaseActivity() {
 
         btnSend.setOnClickListener {
             val question = etQuestion.text.toString()
-            sendQuestionToGPT(question, chatLayout)
+            if (question.isNotEmpty()) {
+                sendQuestionToGPT(question, chatLayout)
+                etQuestion.text.clear()
+            } else {
+                Toast.makeText(this, "질문을 입력하세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -54,6 +62,15 @@ class ChatGPTActivity : BaseActivity() {
             textSize = 16f
             setPadding(8, 8, 8, 8)
         }
+        val separator = View(this).apply {
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1 // 선의 높이
+            )
+            setBackgroundColor(Color.BLACK) // 선의 색상
+        }
+        chatLayout.addView(separator)
         chatLayout.addView(textView)
     }
+
 }

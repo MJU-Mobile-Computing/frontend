@@ -11,3 +11,4 @@ data class GPTResponse(
     val description: String?,
     val statusCode: Int
 )
+

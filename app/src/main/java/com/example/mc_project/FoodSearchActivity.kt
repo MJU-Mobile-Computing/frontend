@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityFoodSearchBinding
 import com.example.mc_project.models.SearchFoodResponse
@@ -22,6 +23,13 @@ class FoodSearchActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnSearchFood.setOnClickListener { searchFood(binding.etSearchFood.text.toString()) }
+
+        // GPT 질문 버튼에 대한 클릭 리스너 설정
+        binding.btnAskGPT.setOnClickListener {
+            // ChatGPTActivity로 화면 전환을 위한 Intent 생성
+            val chatGPTIntent = Intent(this@FoodSearchActivity, ChatGPTActivity::class.java)
+            startActivity(chatGPTIntent)
+        }
     }
 
     private fun searchFood(query: String) {
@@ -61,5 +69,11 @@ class FoodSearchActivity : AppCompatActivity() {
                 // API 호출 실패 처리
             }
         })
+    }
+
+    // Toast 메시지를 띄우는 함수
+    private fun showToast(message: String) {
+        // 현재 액티비티의 context를 사용하여 Toast 메시지를 띄웁니다.
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
