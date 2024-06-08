@@ -21,6 +21,12 @@ class FoodRegistrationActivity : BaseActivity() {
     private val FOOD_SEARCH_REQUEST_CODE = 100
     private var currentMealType: String? = null
 
+    // 배너 상태를 추적하기 위한 변수들
+    private var breakfastAdded = false
+    private var lunchAdded = false
+    private var dinnerAdded = false
+    private var snackAdded = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityFoodRegistrationBinding.inflate(layoutInflater)
@@ -34,7 +40,6 @@ class FoodRegistrationActivity : BaseActivity() {
         binding.btnAddDinner.setOnClickListener { openFoodSearchActivity("저녁") }
         binding.btnAddSnack.setOnClickListener { openFoodSearchActivity("간식") }
 
-
         binding.btnRegisterExercise.setOnClickListener {
             val exerciseHour = binding.etExerciseHour.text.toString()
             if (exerciseHour.isNotEmpty()) {
@@ -47,7 +52,7 @@ class FoodRegistrationActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == FOOD_SEARCH_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == FOOD_SEARCH_REQUEST_CODE && resultCode == RESULT_OK) {
             val selectedFood = data?.getStringExtra("selectedFood")
             val calories = data?.getIntExtra("calories", 0) ?: 0
             val carbohydrates = data?.getDoubleExtra("carbohydrates", 0.0) ?: 0.0
@@ -58,7 +63,7 @@ class FoodRegistrationActivity : BaseActivity() {
                 displaySelectedFood(it, calories)
                 addMealCalories(calories)
 
-                // 음식 등록 API 호출
+                // 음식 등록 API 호출 후, 성공 시 메인 액티비티로 데이터 전달
                 registerFood(
                     calories.toString(),
                     carbohydrates.toString(),
@@ -66,6 +71,17 @@ class FoodRegistrationActivity : BaseActivity() {
                     fat.toString(),
                     currentMealType ?: ""
                 )
+
+                // 각 배너에 따른 상태 업데이트
+                when (currentMealType) {
+                    "아침" -> breakfastAdded = true
+                    "점심" -> lunchAdded = true
+                    "저녁" -> dinnerAdded = true
+                    "간식" -> snackAdded = true
+                }
+
+                // 모든 배너 상태 확인
+                checkAndNavigateToMain()
             }
         }
     }
@@ -123,7 +139,9 @@ class FoodRegistrationActivity : BaseActivity() {
                     if (response.isSuccessful) {
                         val message = response.body()?.data?.message ?: "Unknown response"
                         Log.d("FoodRegistration", message)
+
                         // 성공적인 응답 처리 (예: UI 업데이트 또는 메시지 표시)
+                        // 메인 엑티비티로 데이터 전달 후 엑티비티 종료는 checkAndNavigateToMain에서 처리
                     } else {
                         Log.e(
                             "FoodRegistration",
@@ -151,9 +169,11 @@ class FoodRegistrationActivity : BaseActivity() {
                         Log.d("ExerciseRegistration", message)
 
                         // 운동 등록이 성공하면 운동 시간을 메인 엑티비티로 전달하여 업데이트
-                        val intent = Intent()
+                        val intent = Intent(this@FoodRegistrationActivity, MainActivity::class.java)
                         intent.putExtra("exerciseHour", exerciseHour)
-                        setResult(Activity.RESULT_OK, intent)
+                        startActivity(intent)
+
+                        // 현재 엑티비티 종료
                         finish()
                     } else {
                         Log.e(
@@ -167,5 +187,15 @@ class FoodRegistrationActivity : BaseActivity() {
                     Log.e("ExerciseRegistration", "API call failed", t)
                 }
             })
+    }
+
+    private fun checkAndNavigateToMain() {
+        if (breakfastAdded && lunchAdded && dinnerAdded && snackAdded) {
+            // 모든 배너에 음식이 추가된 경우 메인 화면으로 이동
+            val intent = Intent(this, MainActivity::class.java)
+            intent.putExtra("totalCalories", totalCalories)
+            startActivity(intent)
+            finish() // 현재 엑티비티 종료
+        }
     }
 }
