@@ -1,5 +1,6 @@
 package com.example.mc_project
 
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -19,7 +20,7 @@ class CalendarActivity : BaseActivity() {
     private val diaryData = mutableMapOf<String, String>() // 모든 다이어리 데이터를 저장합니다.
 
     companion object {
-        const val GOAL_CALORIE = 2000 // 예시 목표 칼로리
+        var GOAL_CALORIE = 2000 // 예시 목표 칼로리, SharedPreferences로부터 가져온 값으로 업데이트됨
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,7 +28,19 @@ class CalendarActivity : BaseActivity() {
         binding = ActivityCalendarBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 뒤로가기 버튼 추가
+        // SharedPreferences에서 목표 칼로리 가져오기
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        GOAL_CALORIE = sharedPreferences.getInt("goalCalorie", 2000) // 기본값은 2000 kcal로 설정
+        Log.d("CalendarActivity", "Loaded goalCalorie: $GOAL_CALORIE") // 로그 추가
+
+        // 권장 소비량 텍스트 뷰 업데이트
+        binding.recommendedCaloriesTextView.text = "권장 소비량: $GOAL_CALORIE kcal"
+
+        // 나머지 코드...
+
+
+
+    // 뒤로가기 버튼 추가
         addBackButton()
 
         val cal = Calendar.getInstance()
@@ -53,9 +66,6 @@ class CalendarActivity : BaseActivity() {
             saveDiary()
             loadAllDiaries()
         }
-
-        // 권장 소비량 텍스트 뷰 업데이트
-        binding.recommendedCaloriesTextView.text = "권장 소비량: $GOAL_CALORIE kcal"
     }
 
     // 모든 다이어리 데이터를 로드
@@ -102,7 +112,6 @@ class CalendarActivity : BaseActivity() {
         Log.d("CalendarActivity", "Highlighted dates: ${diaryData.keys.joinToString(", ")}")
     }
 
-
     // 다이어리 내용 로드
     private fun loadDiary() {
         val diaryContent = readDiary(fName)
@@ -120,7 +129,6 @@ class CalendarActivity : BaseActivity() {
         }
         Log.d("CalendarActivity", "Loaded diary file $fName with content: $diaryContent")
     }
-
 
     // 다이어리 내용 저장
     private fun saveDiary() {

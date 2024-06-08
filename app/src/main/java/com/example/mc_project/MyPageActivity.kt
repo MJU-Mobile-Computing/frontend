@@ -3,6 +3,7 @@ package com.example.mc_project
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMyPageBinding
@@ -45,7 +46,24 @@ class MyPageActivity : BaseActivity() {
             val shareTitle = resources.getString(R.string.share_title)
             startActivity(Intent.createChooser(shareIntent, shareTitle))
         }
+
+
     }
+    // 목표 칼로리를 계산하고 SharedPreferences에 저장
+    private fun calculateAndSaveGoalCalories(data: MyPageData): Int {
+        val goalCalorie = calculateRecommendedCalories(data)
+        val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+        with(sharedPreferences.edit()) {
+            putInt("goalCalorie", goalCalorie)
+            apply()
+        }
+        Log.d("MyPageActivity", "Saved goalCalorie: $goalCalorie") // 로그 추가
+        return goalCalorie
+    }
+
+
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -101,6 +119,7 @@ class MyPageActivity : BaseActivity() {
             override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@MyPageActivity, "정보가 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show()
+                    calculateAndSaveGoalCalories(data) // 목표 칼로리를 계산하고 저장
                     fetchMyPageData() // 업데이트된 정보 다시 불러오기
                 }
             }
@@ -111,27 +130,42 @@ class MyPageActivity : BaseActivity() {
         })
     }
 
+
     private fun calculateAge(birthdate: String): Int {
         val birthYear = birthdate.split("-")[0].toInt()
         val currentYear = Calendar.getInstance().get(Calendar.YEAR)
         return currentYear - birthYear
     }
 
-    private fun calculateRecommendedCalories(data: MyPageData): Double {
-        val activityMultiplier = when (data.amountOfActivity) {
+    private fun calculateRecommendedCalories(data: MyPageData? = null): Int {
+        // data가 null인 경우, 화면에서 가져온 데이터를 사용합니다.
+        val myPageData = data ?: MyPageData(
+            binding.profileName.text.toString(),
+            "",
+            "",
+            "",
+            binding.profileHeight.text.toString().replace(" cm", ""),
+            binding.textViewGoal.text.toString(),
+            binding.textViewGoalWeight.text.toString(),
+            "",
+            "",
+            binding.textViewGoalSteps.text.toString()
+        )
+
+        val activityMultiplier = when (myPageData.amountOfActivity) {
             "적음" -> 25.0
             "보통" -> 30.0
             "많음" -> 35.0
             else -> 0.0
         }
-        var recommendedCalories = (data.weight?.replace("kg", "")?.toDoubleOrNull() ?: 0.0) * activityMultiplier
-        recommendedCalories = when (data.goal) {
+        var recommendedCalories = (myPageData.weight?.replace("kg", "")?.toDoubleOrNull() ?: 0.0) * activityMultiplier
+        recommendedCalories = when (myPageData.goal) {
             "체중 감소" -> recommendedCalories - 150
             "체중 유지" -> recommendedCalories
             "체중 증량" -> recommendedCalories + 150
             else -> 0.0
         }
-        return recommendedCalories
+        return recommendedCalories.toInt()
     }
 
     private fun calculateProgress(currentWeight: String?, goalWeight: String?): Int {
