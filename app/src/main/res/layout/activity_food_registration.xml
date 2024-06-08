@@ -266,6 +266,14 @@
         android:layout_below="@id/snackBanner"
         android:layout_margin="16dp" />
 
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_marginVertical="16dp"
+        android:layout_below="@id/tvTotalCalories"/>
+
     <!-- 활동 추천 영역 -->
     <LinearLayout
         android:id="@+id/activityRecommendation"
@@ -273,25 +281,41 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:layout_below="@id/tvTotalCalories">
+        android:layout_below="@id/line">
 
-        <!-- 운동 시간 입력 필드 -->
-        <EditText
-            android:id="@+id/etExerciseHour"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="운동 시간 입력"
-            android:inputType="number"
-            android:layout_marginBottom="16dp"/>
+            android:orientation="horizontal">
 
-        <!-- 운동 시간 등록 버튼 -->
-        <Button
-            android:id="@+id/btnRegisterExercise"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="운동 시간 등록"
-            android:layout_marginBottom="16dp"
-            android:theme="@style/CustomButton"/>
+            <!-- 운동 시간 입력 필드 -->
+            <EditText
+                android:id="@+id/etExerciseHour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="운동 시간 입력"
+                android:inputType="number"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:layout_gravity="start"/>
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <!-- 운동 시간 등록 버튼 -->
+            <Button
+                android:id="@+id/btnRegisterExercise"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="운동 시간 등록"
+                android:layout_marginBottom="16dp"
+                android:layout_gravity="end"
+                android:theme="@style/CustomButton"/>
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/tvActivityTitle"
@@ -301,7 +325,7 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:textColor="#000"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"/>
 
         <TextView
             android:id="@+id/tvActivityDescription"
