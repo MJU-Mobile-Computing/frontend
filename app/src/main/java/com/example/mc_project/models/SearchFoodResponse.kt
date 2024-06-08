@@ -19,5 +19,6 @@ data class SearchFood(
     val carbohydrates: Double,
     val protein: Double,
     val fat: Double,
-    val water: Double
+    val water: Double,
+    val bookmarked: Boolean
 )

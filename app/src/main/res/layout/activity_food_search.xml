@@ -37,6 +37,7 @@
             android:theme="@style/CustomButton" />
     </LinearLayout>
 
+
     <ListView
         android:id="@+id/listViewSearchResults"
         android:layout_width="match_parent"

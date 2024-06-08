@@ -46,11 +46,21 @@ class FoodSearchActivity : AppCompatActivity() {
                         val foodView = LayoutInflater.from(this@FoodSearchActivity).inflate(R.layout.food_item, searchResultsLayout, false)
                         val tvFoodName: TextView = foodView.findViewById(R.id.tvFoodName)
                         val tvFoodCalories: TextView = foodView.findViewById(R.id.tvFoodCalories)
+                        val tvFoodCarbohydrates: TextView = foodView.findViewById(R.id.tvFoodCarbohydrates)
+                        val tvFoodProtein: TextView = foodView.findViewById(R.id.tvFoodProtein)
+                        val tvFoodFat: TextView = foodView.findViewById(R.id.tvFoodFat)
+                        val tvBookmarkStatus: TextView = foodView.findViewById(R.id.tvBookmarkStatus)
                         val btnBookmark: Button = foodView.findViewById(R.id.btnBookmark)
                         val btnDeleteBookmark: Button = foodView.findViewById(R.id.btnDeleteBookmark)
 
                         tvFoodName.text = food.foodName
-                        tvFoodCalories.text = "${food.calories} 칼로리"
+                        tvFoodCalories.text = "Calories: ${food.calories}"
+                        tvFoodCarbohydrates.text = "Carbohydrates: ${food.carbohydrates}"
+                        tvFoodProtein.text = "Protein: ${food.protein}"
+                        tvFoodFat.text = "Fat: ${food.fat}"
+
+                        // Set bookmark status
+                        tvBookmarkStatus.text = if (food.bookmarked) "✔️" else "✖️"
 
                         foodView.setOnClickListener {
                             // FoodSearchActivity에서 Intent로 데이터를 전달할 때
@@ -79,6 +89,7 @@ class FoodSearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<SearchFoodResponse>, t: Throwable) {
                 // API 호출 실패 처리
+                showToast("Failed to retrieve food data")
             }
         })
     }
@@ -121,7 +132,6 @@ class FoodSearchActivity : AppCompatActivity() {
 
     // Toast 메시지를 띄우는 함수
     private fun showToast(message: String) {
-        // 현재 액티비티의 context를 사용하여 Toast 메시지를 띄웁니다.
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
