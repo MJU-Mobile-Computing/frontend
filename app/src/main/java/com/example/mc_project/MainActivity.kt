@@ -1,5 +1,6 @@
 package com.example.mc_project
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -32,6 +33,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // Set current date on TextView
+        dateTextView = findViewById(R.id.dateTextView)
+        dateTextView.text = currentDate
+
+        // 상단 좌측 텍스트 뷰 클릭 시 DatePickerDialog 표시
+        dateTextView.setOnClickListener {
+            showDatePickerDialog()
+        }
 
         // SharedPreferences에서 목표 칼로리 가져오기
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
@@ -194,4 +204,27 @@ class MainActivity : AppCompatActivity() {
         calendar.add(Calendar.DAY_OF_YEAR, 1)
         return sdf.format(calendar.time)
     }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = "$year-${month + 1}-$dayOfMonth"
+                dateTextView.text = selectedDate
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.show()
+    }
+
+
+
+
 }
