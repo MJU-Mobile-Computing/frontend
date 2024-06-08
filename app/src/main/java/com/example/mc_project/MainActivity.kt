@@ -3,8 +3,10 @@ package com.example.mc_project
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityMainBinding
 import com.example.mc_project.models.MainPageResponse
 import com.google.android.material.appbar.MaterialToolbar
@@ -14,13 +16,17 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
     private var intakeCalories = 0.0
     private var burnedCalories = 0 // 소비량 변수 추가
     private var dailyCalorieGoal = 2700.0 // 기본값, SharedPreferences에서 업데이트됨
+    private lateinit var dateTextView: TextView
+    private var currentDate = "2024-06-09" // 초기 날짜 설정
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +88,12 @@ class MainActivity : BaseActivity() {
 
         // Fetch data from API using Retrofit
         fetchDataFromApi()
+
+        // Set current date on TextView
+        dateTextView = findViewById(R.id.dateTextView)
+        dateTextView.text = currentDate
+
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -163,5 +175,23 @@ class MainActivity : BaseActivity() {
 
     private fun calculateProgress(current: Double, goal: Double): Int {
         return ((current / goal) * 100).toInt()
+    }
+
+    private fun getPreviousDate(date: String): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = sdf.parse(date) ?: Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.add(Calendar.DAY_OF_YEAR, -1)
+        return sdf.format(calendar.time)
+    }
+
+    private fun getNextDate(date: String): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val currentDate = sdf.parse(date) ?: Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = currentDate
+        calendar.add(Calendar.DAY_OF_YEAR, 1)
+        return sdf.format(calendar.time)
     }
 }

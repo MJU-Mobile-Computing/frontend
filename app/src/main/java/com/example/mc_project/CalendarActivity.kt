@@ -18,6 +18,7 @@ class CalendarActivity : BaseActivity() {
     private lateinit var binding: ActivityCalendarBinding
     private lateinit var fName: String // 파일 이름을 멤버 변수로 선언합니다.
     private val diaryData = mutableMapOf<String, String>() // 모든 다이어리 데이터를 저장합니다.
+    private var selectedDate: CalendarDay? = null // 선택된 날짜를 저장하는 변수 추가
 
     companion object {
         var GOAL_CALORIE = 2000 // 예시 목표 칼로리, SharedPreferences로부터 가져온 값으로 업데이트됨
@@ -36,11 +37,7 @@ class CalendarActivity : BaseActivity() {
         // 권장 소비량 텍스트 뷰 업데이트
         binding.recommendedCaloriesTextView.text = "권장 소비량: $GOAL_CALORIE kcal"
 
-        // 나머지 코드...
-
-
-
-    // 뒤로가기 버튼 추가
+        // 뒤로가기 버튼 추가
         addBackButton()
 
         val cal = Calendar.getInstance()
@@ -57,6 +54,7 @@ class CalendarActivity : BaseActivity() {
 
         // CalendarView 초기화
         binding.calendarView.setOnDateChangedListener { widget, date, selected ->
+            selectedDate = date // 선택된 날짜 업데이트
             fName = "${date.year}-${date.month + 1}-${date.day}.txt"
             loadDiary()
         }
@@ -66,6 +64,10 @@ class CalendarActivity : BaseActivity() {
             saveDiary()
             loadAllDiaries()
         }
+
+        // 초기에 현재 날짜를 선택한 상태로 표시
+        selectedDate = CalendarDay.from(cYear, cMonth, cDay)
+        binding.calendarView.setDateSelected(selectedDate, true)
     }
 
     // 모든 다이어리 데이터를 로드

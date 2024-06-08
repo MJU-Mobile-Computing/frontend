@@ -14,6 +14,20 @@
         app:menu="@menu/toolbar_menu">
     </com.google.android.material.appbar.MaterialToolbar>
 
+    <!-- 상단 좌측에 날짜 표시하는 텍스트뷰 -->
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="2024-06-09"
+        android:textSize="18sp"
+        android:textColor="#000" />
+
+
     <!-- 상단 영역 -->
 
     <LinearLayout
