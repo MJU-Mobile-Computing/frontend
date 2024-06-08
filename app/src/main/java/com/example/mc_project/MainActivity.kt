@@ -44,6 +44,11 @@ class MainActivity : BaseActivity() {
                     startActivity(intent)
                     true
                 }
+                R.id.menu_refresh -> {
+                    // 새로고침 버튼 클릭 시 데이터 다시 조회
+                    fetchDataFromApi()
+                    true
+                }
                 else -> false
             }
         }

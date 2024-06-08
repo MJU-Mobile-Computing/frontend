@@ -12,4 +12,10 @@
         android:icon="@drawable/ic_mypage"
         android:title="마이페이지"
         app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/menu_refresh"
+        android:icon="@drawable/baseline_autorenew_24"
+        android:title="Refresh"
+        app:showAsAction="ifRoom"/>
 </menu>
