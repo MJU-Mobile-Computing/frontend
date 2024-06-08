@@ -1,66 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <LinearLayout
-        android:id="@+id/searchAndAskLayout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/etSearchFood"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:id="@+id/searchAndAskLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="음식 검색"
-            android:padding="8dp"
-            android:textSize="16sp"
-            android:inputType="text" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/etSearchFood"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="음식 검색"
+                android:padding="8dp"
+                android:textSize="16sp"
+                android:inputType="text" />
+
+            <Button
+                android:id="@+id/btnSearchFood"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="검색"
+                android:theme="@style/CustomButton" />
+
+            <Button
+                android:id="@+id/btnAskGPT"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPT 질문"
+                android:layout_marginStart="16dp"
+                android:theme="@style/CustomButton" />
+        </LinearLayout>
+
+        <ListView
+            android:id="@+id/listViewSearchResults"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/searchAndAskLayout"
+            android:layout_marginTop="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/searchResultsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_below="@id/listViewSearchResults">
+        </LinearLayout>
 
         <Button
-            android:id="@+id/btnSearchFood"
+            android:id="@+id/btnCompleteSelection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="검색"
-            android:theme="@style/CustomButton" />
-
-        <Button
-            android:id="@+id/btnAskGPT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="GPT 질문"
-            android:layout_marginStart="16dp"
-            android:theme="@style/CustomButton" />
-    </LinearLayout>
-
-
-    <ListView
-        android:id="@+id/listViewSearchResults"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/searchAndAskLayout"
-        android:layout_marginTop="16dp"/>
-
-    <LinearLayout
-        android:id="@+id/searchResultsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_below="@id/listViewSearchResults">
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btnCompleteSelection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="완료"
-        android:visibility="gone"
-        android:theme="@style/CustomButton"
-        android:layout_below="@id/searchResultsLayout"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+            android:text="완료"
+            android:visibility="gone"
+            android:theme="@style/CustomButton"
+            android:layout_below="@id/searchResultsLayout"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</ScrollView>
