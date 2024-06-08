@@ -47,6 +47,7 @@ class FoodSearchActivity : AppCompatActivity() {
                         val tvFoodName: TextView = foodView.findViewById(R.id.tvFoodName)
                         val tvFoodCalories: TextView = foodView.findViewById(R.id.tvFoodCalories)
                         val btnBookmark: Button = foodView.findViewById(R.id.btnBookmark)
+                        val btnDeleteBookmark: Button = foodView.findViewById(R.id.btnDeleteBookmark)
 
                         tvFoodName.text = food.foodName
                         tvFoodCalories.text = "${food.calories} 칼로리"
@@ -65,6 +66,10 @@ class FoodSearchActivity : AppCompatActivity() {
 
                         btnBookmark.setOnClickListener {
                             bookmarkFood(food.id)
+                        }
+
+                        btnDeleteBookmark.setOnClickListener {
+                            deleteBookmark(food.id)
                         }
 
                         searchResultsLayout.addView(foodView)
@@ -94,6 +99,22 @@ class FoodSearchActivity : AppCompatActivity() {
 
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 showToast("Failed to add bookmark")
+            }
+        })
+    }
+
+    private fun deleteBookmark(foodId: Int) {
+        RetrofitInstance.api.deleteBookmark(foodId).enqueue(object : Callback<ApiResponse> {
+            override fun onResponse(call: Call<ApiResponse>, response: Response<ApiResponse>) {
+                if (response.isSuccessful) {
+                    showToast("Bookmark deleted successfully")
+                } else {
+                    showToast("Failed to delete bookmark")
+                }
+            }
+
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                showToast("Failed to delete bookmark")
             }
         })
     }
