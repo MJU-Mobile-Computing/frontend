@@ -3,6 +3,10 @@
     <style name="Base.Theme.MC_Project" parent="Theme.Material3.DayNight">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+<!--        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>-->
+<!--        <item name="colorOnPrimary">@color/colorOnPrimary</item>-->
+
     </style>
 
     <style name="Theme.MC_Project" parent="Base.Theme.MC_Project" />

@@ -56,10 +56,10 @@ class EditProfileActivity : BaseActivity() {
         }
     }
 
-    override fun onBackPressed() {
-        saveProfile() // 뒤로가기 버튼을 누를 때도 프로필을 저장
-        super.onBackPressed()
-    }
+//    override fun onBackPressed() {
+//        saveProfile() // 뒤로가기 버튼을 누를 때도 프로필을 저장
+//        super.onBackPressed()
+//    }
 
     private fun saveProfile() {
         val lastName = binding.editTextLastName.text.toString()
