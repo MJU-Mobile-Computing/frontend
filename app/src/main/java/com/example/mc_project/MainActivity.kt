@@ -1,10 +1,11 @@
 package com.example.mc_project
 
-import android.os.Bundle
-import com.example.mc_project.databinding.ActivityMainBinding
 import android.content.Intent
+import android.os.Bundle
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
+import com.example.mc_project.databinding.ActivityMainBinding
 import com.example.mc_project.models.MainPageResponse
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.appbar.MaterialToolbar
@@ -96,8 +97,32 @@ class MainActivity : BaseActivity() {
         if (requestCode == FOOD_REGISTRATION_REQUEST_CODE && resultCode == RESULT_OK) {
             val additionalCalories = data?.getIntExtra("totalCalories", 0) ?: 0
             intakeCalories += additionalCalories
+
+            // 운동시간 데이터 처리
+            val exerciseHour = data?.getStringExtra("exerciseHour")
+            if (!exerciseHour.isNullOrEmpty()) {
+                // 운동시간에 따른 소비 칼로리 계산하여 반영
+                val exerciseHourInt = exerciseHour.toInt()
+                val burnedCaloriesFromExercise = exerciseHourInt * 200 // 1시간당 200칼로리 소모로 수정
+                burnedCalories += burnedCaloriesFromExercise // 잔여 칼로리에 반영
+            }
+
             updateIntakeAndRemainingCalories()
         }
+    }
+
+    private fun updateIntakeAndRemainingCalories() {
+        val intakeCaloriesTextView: TextView = findViewById(R.id.tvIntakeValue)
+        val remainingCaloriesTextView: TextView = findViewById(R.id.tvRemainingCalories)
+        val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
+
+        intakeCaloriesTextView.text = intakeCalories.toInt().toString()
+        // 운동에 의해 소비된 칼로리를 잔여 칼로리에 반영하여 계산
+        val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories // 소비량을 고려하여 남은 칼로리 계산
+        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
+
+        val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
+        remainingCaloriesProgressBar.progress = progress
     }
 
     private fun fetchDataFromApi() {
@@ -148,20 +173,8 @@ class MainActivity : BaseActivity() {
         fatProgressTextView.text = "${fat.toInt()}/87g"
     }
 
-    private fun updateIntakeAndRemainingCalories() {
-        val intakeCaloriesTextView: TextView = findViewById(R.id.tvIntakeValue)
-        val remainingCaloriesTextView: TextView = findViewById(R.id.tvRemainingCalories)
-        val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
-
-        intakeCaloriesTextView.text = intakeCalories.toInt().toString()
-        val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories // 소비량을 고려하여 남은 칼로리 계산
-        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
-
-        val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
-        remainingCaloriesProgressBar.progress = progress
-    }
-
     private fun calculateProgress(current: Double, goal: Double): Int {
         return ((current / goal) * 100).toInt()
     }
 }
+
