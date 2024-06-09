@@ -169,7 +169,9 @@ class MainActivity : AppCompatActivity() {
         val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
 
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
-        val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories
+
+        // 잔여 칼로리 계산: 목표 칼로리 - 섭취량 + (운동 칼로리 * 400)
+        val remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 400)
         remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
 
         val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
