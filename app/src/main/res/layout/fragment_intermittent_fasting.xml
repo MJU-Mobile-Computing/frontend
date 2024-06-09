@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/background_card"
+        android:elevation="4dp"
+        android:paddingBottom="24dp">
+
+        <TextView
+            android:id="@+id/titleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="간헐적 단식의 장점과 방법"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:layout_gravity="center_horizontal"
+            android:paddingBottom="16dp" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:src="@drawable/ic_fasting"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:id="@+id/advantagesTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="간헐적 단식의 장점"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/advantagesContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. 체중 감량\n2. 대사 건강 개선\n3. 인슐린 감수성 향상\n4. 세포 재생 및 수리 촉진\n5. 염증 감소"
+            android:textSize="16sp"
+            android:textColor="@color/black"
+            android:paddingBottom="16dp" />
+
+        <TextView
+            android:id="@+id/methodsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="간헐적 단식의 방법"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:paddingBottom="8dp" />
+
+        <TextView
+            android:id="@+id/methodsContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1. 16/8 방법: 16시간 단식, 8시간 식사\n2. 5:2 방법: 주 5일 정상 식사, 주 2일 제한 식사\n3. 24시간 단식: 주 1-2회 24시간 단식"
+            android:textSize="16sp"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
+
+</ScrollView>

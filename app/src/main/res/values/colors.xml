@@ -3,6 +3,7 @@
     <color name="colorPrimary">#FF80CBC4</color>
     <color name="colorPrimaryVariant">#0047AB</color>
     <color name="colorOnPrimary">#018786</color>
+    <color name="light_gray">#D3D3D3</color>
 
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
