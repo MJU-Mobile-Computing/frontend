@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:layout_margin="16dp"
+    android:background="@drawable/border"
+    tools:context=".ProFragment">
+
+    <!-- 닭가슴살 배너 -->
+    <LinearLayout
+        android:id="@+id/chickenBanner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp">
+
+        <!-- 닭가슴살 이미지 -->
+        <ImageView
+            android:id="@+id/imgChicken"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_chicken_breast"
+            android:contentDescription="닭가슴살 이미지" />
+
+        <!-- 닭가슴살 텍스트 뷰 -->
+        <TextView
+            android:id="@+id/tvChicken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닭가슴살 랭킹1위!!"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+    </LinearLayout>
+    <!-- 닭가슴살 배너 2 -->
+    <LinearLayout
+        android:id="@+id/chickenBanner2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_below="@id/chickenBanner">
+
+        <!-- 닭가슴살 이미지 2 -->
+        <ImageView
+            android:id="@+id/imgChicken2"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_chicken_breast_2"
+            android:contentDescription="닭가슴살 이미지 2" />
+
+        <!-- 닭가슴살 텍스트 뷰 2 -->
+        <TextView
+            android:id="@+id/tvChicken2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닭가슴살 랭킹 2위!!"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+    </LinearLayout>
+    <!-- 닭가슴살 배너 3 -->
+    <LinearLayout
+        android:id="@+id/chickenBanner3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="16dp"
+        android:layout_below="@id/chickenBanner2">
+
+        <!-- 닭가슴살 이미지 3 -->
+        <ImageView
+            android:id="@+id/imgChicken3"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_chicken_breast_3"
+            android:contentDescription="닭가슴살 이미지 3" />
+
+        <!-- 닭가슴살 텍스트 뷰 3 -->
+        <TextView
+            android:id="@+id/tvChicken3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="닭가슴살 최저가 한눈에 보기!!"
+            android:textSize="16sp"
+            android:textColor="#000"
+            android:layout_marginEnd="8dp" />
+
+    </LinearLayout>
+
+</RelativeLayout>

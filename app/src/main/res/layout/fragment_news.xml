@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/news1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1. 매일 운동하면 몸에 어떤 변화가?"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/news2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2. 영양소 균형 잡힌 식단의 중요성"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/news3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3. 스트레스 관리, 이렇게 하면 효과적이다"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/news4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4. 하루에 물 얼마나 마셔야 할까?"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"/>
+
+            <TextView
+                android:id="@+id/news5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5. 숙면을 위한 꿀팁"
+                android:textSize="18sp"
+                android:layout_marginBottom="16dp"
+                android:padding="8dp"/>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>
