@@ -2,15 +2,21 @@ package com.example.mc_project
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import com.example.mc_project.BaseActivity
 import com.example.mc_project.R
+import com.example.mc_project.models.GPTResponse
+import com.example.mc_project.models.QuestionRequest
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.Description
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import org.tensorflow.lite.Interpreter
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.FileInputStream
 import java.io.IOException
 import java.nio.MappedByteBuffer
@@ -58,9 +64,9 @@ class ReportActivity : BaseActivity() {
 
         // 예제 칼로리 섭취 데이터 생성 (최근 6개월)
         val calorieIntake = listOf(2000f, 2100f, 1900f, 2200f, 2300f, 2000f)
-        val carbIntake = listOf(250f, 260f, 240f, 270f, 280f, 250f)
-        val proteinIntake = listOf(80f, 85f, 75f, 90f, 95f, 80f)
-        val fatIntake = listOf(70f, 75f, 65f, 80f, 85f, 70f)
+        val carbIntake = listOf(250f, 210f, 190f, 270f, 280f, 310f)
+        val proteinIntake = listOf(80f, 80f, 90f, 100f, 100f, 95f)
+        val fatIntake = listOf(70f, 70f, 65f, 60f, 65f, 60f)
 
         // 각 영양 성분별 그래프에 데이터 설정
         setCalorieChartData(calorieIntake)
@@ -164,12 +170,33 @@ class ReportActivity : BaseActivity() {
     }
 
     private fun setRecommendations(calorieIntake: List<Float>, carbIntake: List<Float>, proteinIntake: List<Float>, fatIntake: List<Float>) {
-        val recommendationTextView1 = findViewById<TextView>(R.id.recommendationTextView1)
-        val recommendationTextView2 = findViewById<TextView>(R.id.recommendationTextView2)
+        // Fetch recommendations from GPT API
+        val totalCalories = calorieIntake.sum()
+        val totalCarbohydrates = carbIntake.sum()
+        val totalProteins = proteinIntake.sum()
+        val totalFats = fatIntake.sum()
+
+        val question = "총 칼로리: $totalCalories, 탄수화물: $totalCarbohydrates, 단백질: $totalProteins, 지방: $totalFats. 이 데이터를 기반으로 추천해주세요."
+
+        val questionRequest = QuestionRequest(question)
+
+        RetrofitInstance.api.askGPT(questionRequest).enqueue(object : Callback<GPTResponse> {
+            override fun onResponse(call: Call<GPTResponse>, response: Response<GPTResponse>) {
+                if (response.isSuccessful) {
+                    val recommendation = response.body()?.data
+                    findViewById<TextView>(R.id.recommendationTextView1).text = recommendation ?: "추천 내용을 불러올 수 없습니다."
+                } else {
+                    findViewById<TextView>(R.id.recommendationTextView1).text = "추천 내용을 불러올 수 없습니다."
+                }
+            }
+
+            override fun onFailure(call: Call<GPTResponse>, t: Throwable) {
+                findViewById<TextView>(R.id.recommendationTextView1).text = "추천 내용을 불러올 수 없습니다."
+            }
+        })
 
         // 예시 추천 로직 (임의로 작성)
-        recommendationTextView1.text = "1. 탄수화물, 단백질, 지방의 적절한 비율로 균형 잡힌 식단을 유지하세요."
-        recommendationTextView2.text = "2. 근육 유지와 성장을 지원하기 위해 단백질 섭취를 늘리는 것을 권장합니다."
+        findViewById<TextView>(R.id.recommendationTextView2).text = "2. 근육 유지와 성장을 지원하기 위해 단백질 섭취를 늘리는 것을 권장합니다."
     }
 
     @Throws(IOException::class)

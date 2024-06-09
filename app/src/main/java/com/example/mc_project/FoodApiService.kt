@@ -48,4 +48,7 @@ interface FoodApiService {
 
     @DELETE("bookmark/delete")
     fun deleteBookmark(@Query("foodId") foodId: Int): Call<ApiResponse>
+
+    @GET("mainpage/date")
+    fun getMainPageDataByDate(@Query("date") date: String): Call<MainPageResponse>
 }
