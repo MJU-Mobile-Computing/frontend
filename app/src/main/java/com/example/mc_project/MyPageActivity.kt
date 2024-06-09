@@ -47,9 +47,10 @@ class MyPageActivity : BaseActivity() {
             startActivity(Intent.createChooser(shareIntent, shareTitle))
         }
 
-
+        // SharedData의 remainingCalories를 렌더링
+        binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${SharedData.remainingCalories.toInt()} kcal"
     }
-    // 목표 칼로리를 계산하고 SharedPreferences에 저장
+
     private fun calculateAndSaveGoalCalories(data: MyPageData): Int {
         val goalCalorie = calculateRecommendedCalories(data)
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
@@ -57,13 +58,10 @@ class MyPageActivity : BaseActivity() {
             putInt("goalCalorie", goalCalorie)
             apply()
         }
+        SharedData.remainingCalories = goalCalorie.toDouble() // SharedData에 저장
         Log.d("MyPageActivity", "Saved goalCalorie: $goalCalorie") // 로그 추가
         return goalCalorie
     }
-
-
-
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -100,7 +98,7 @@ class MyPageActivity : BaseActivity() {
                         binding.profileHeight.text = "${data.height} cm"
                         binding.textViewGoal.text = "목표: ${data.goal}"
                         binding.textViewGoalWeight.text = "목표 몸무게: ${data.goalWeight} kg"
-                        binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${calculateRecommendedCalories(data)} kcal"
+                        binding.textViewGoalCalorie.text = "하루 목표 권장 칼로리: ${SharedData.remainingCalories.toInt()} kcal"
                         binding.textViewGoalSteps.text = "걸음 목표: ${data.goalSteps}"
                         binding.progressBar.progress = calculateProgress(data.weight, data.goalWeight)
                         binding.TextViewPrograss.text = "${calculateProgress(data.weight, data.goalWeight)}%"
@@ -119,7 +117,8 @@ class MyPageActivity : BaseActivity() {
             override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
                 if (response.isSuccessful) {
                     Toast.makeText(this@MyPageActivity, "정보가 성공적으로 업데이트되었습니다.", Toast.LENGTH_SHORT).show()
-                    calculateAndSaveGoalCalories(data) // 목표 칼로리를 계산하고 저장
+                    val goalCalories = calculateAndSaveGoalCalories(data) // 목표 칼로리를 계산하고 저장
+                    SharedData.remainingCalories = goalCalories.toDouble() // SharedData에 저장
                     fetchMyPageData() // 업데이트된 정보 다시 불러오기
                 }
             }
@@ -129,7 +128,6 @@ class MyPageActivity : BaseActivity() {
             }
         })
     }
-
 
     private fun calculateAge(birthdate: String): Int {
         val birthYear = birthdate.split("-")[0].toInt()

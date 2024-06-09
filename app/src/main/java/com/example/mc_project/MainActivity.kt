@@ -139,6 +139,7 @@ class MainActivity : AppCompatActivity() {
                         intakeCalories = it.totalCalories
                         burnedCalories = it.totalBurnedCalories.toInt()
                         dailyCalorieGoal = it.goalCalories // Update the goal calories
+                        SharedData.remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 200) // Update SharedData
                         updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat, it.totalBurnedCalories)
                         updateIntakeAndRemainingCalories()
                     }
@@ -182,10 +183,11 @@ class MainActivity : AppCompatActivity() {
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
 
         // 잔여 칼로리 계산: 목표 칼로리 - 섭취량 + (운동 칼로리 * 200)
-        SharedData.remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 200)
+        val remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 200)
+        SharedData.remainingCalories = remainingCalories // SharedData에 저장
         remainingCaloriesTextView.text = "${SharedData.remainingCalories.toInt()} cal"
 
-        val progress = calculateProgress(SharedData.remainingCalories, dailyCalorieGoal)
+        val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
         remainingCaloriesProgressBar.progress = progress
     }
 
