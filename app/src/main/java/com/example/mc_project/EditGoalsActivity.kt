@@ -117,7 +117,7 @@ class EditGoalsActivity : BaseActivity() {
     private fun calculateRecommendedCalories(currentWeight: Double, goalWeight: Double, activityLevel: String): Float {
         // Simple calculation for example purposes
         // You can replace this with the actual formula for calculating recommended calories
-        return (currentWeight * 10 + goalWeight * 6.25).toFloat()
+        return (currentWeight * 10 + goalWeight * 6.25).toFloat() + 700
     }
 
     private fun setGoalCalories(goalCalories: Float) {

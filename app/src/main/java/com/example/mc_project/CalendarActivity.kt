@@ -4,13 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import com.example.mc_project.databinding.ActivityCalendarBinding
 import com.example.mc_project.models.GoalCaloriesRequest
+import com.example.mc_project.models.MainPageResponse
 import com.example.mc_project.models.MessageResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CalendarActivity : BaseActivity() {
     private lateinit var binding: ActivityCalendarBinding
@@ -22,27 +24,48 @@ class CalendarActivity : BaseActivity() {
 
         addBackButton()
 
-        // 기존 코드 생략...
+        // 서버에서 목표 칼로리 값을 가져옴
+        fetchGoalCalories()
 
         binding.btnSmt.setOnClickListener {
             saveDiary()
         }
     }
 
-    // 다이어리 내용 저장
+    private fun fetchGoalCalories() {
+        val currentDate = getCurrentDate()
+        RetrofitInstance.api.getMainPageDataByDate(currentDate).enqueue(object : Callback<MainPageResponse> {
+            override fun onResponse(call: Call<MainPageResponse>, response: Response<MainPageResponse>) {
+                if (response.isSuccessful) {
+                    val goalCalories = response.body()?.data?.goalCalories ?: 0f
+                    binding.editTextCalories.setText(goalCalories.toString())
+                } else {
+                    Log.e("CalendarActivity", "Failed to fetch goal calories")
+                }
+            }
+
+            override fun onFailure(call: Call<MainPageResponse>, t: Throwable) {
+                Log.e("CalendarActivity", "API call failed", t)
+            }
+        })
+    }
+
+    private fun getCurrentDate(): String {
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        return sdf.format(Date())
+    }
+
     private fun saveDiary() {
         val caloriesContent = binding.editTextCalories.text.toString()
         val weightContent = binding.editTextWeight.text.toString()
         val diaryContent = "$caloriesContent\n$weightContent"
 
-        // 목표 칼로리 설정 API 호출
         val goalCalories = caloriesContent.toFloatOrNull()
         if (goalCalories != null) {
             setGoalCalories(goalCalories)
         }
     }
 
-    // 목표 칼로리 설정 API 호출
     private fun setGoalCalories(goalCalories: Float) {
         val request = GoalCaloriesRequest(goalCalories)
         RetrofitInstance.api.setGoalCalories(request).enqueue(object : Callback<MessageResponse> {
@@ -50,7 +73,6 @@ class CalendarActivity : BaseActivity() {
                 if (response.isSuccessful) {
                     Toast.makeText(this@CalendarActivity, "목표 칼로리 설정 완료", Toast.LENGTH_SHORT).show()
                     Log.d("CalendarActivity", "API Response: 목표 칼로리 설정 완료")
-                    // 성공적으로 설정되면 결과를 반환하고 액티비티 종료
                     setResult(RESULT_OK)
                     finish()
                 } else {
