@@ -120,13 +120,15 @@ class MainActivity : AppCompatActivity() {
 
             val exerciseHour = data?.getStringExtra("exerciseHour")
             if (exerciseHour != null) {
-                val burnedCaloriesFromExercise = exerciseHour.toInt() * 200
+                val burnedCaloriesFromExercise = exerciseHour.toInt() * 400  // 운동 시간당 400 칼로리로 변경
                 burnedCalories += burnedCaloriesFromExercise
             }
 
-            updateIntakeAndRemainingCalories()
+            updateIntakeAndRemainingCalories() // 잔여 칼로리 업데이트
+
         }
     }
+
 
     private fun fetchMainPageDataByDate(date: String) {
         RetrofitInstance.api.getMainPageDataByDate(date)
@@ -194,11 +196,16 @@ class MainActivity : AppCompatActivity() {
 
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
         val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories
-        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
+        remainingCaloriesTextView.text = "${remainingCalories.toInt()} kcal"
+
+        Log.d("MainActivity", "Intake calories: $intakeCalories")
+        Log.d("MainActivity", "Burned calories: $burnedCalories")
+        Log.d("MainActivity", "Remaining calories: $remainingCalories")
 
         val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
         remainingCaloriesProgressBar.progress = progress
     }
+
 
     private fun calculateProgress(current: Double, goal: Double): Int {
         return ((current / goal) * 100).toInt()
