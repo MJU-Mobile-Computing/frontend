@@ -21,6 +21,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
     private var intakeCalories = 0.0
@@ -38,10 +39,13 @@ class MainActivity : AppCompatActivity() {
         dateTextView = findViewById(R.id.dateTextView)
         dateTextView.text = currentDate
 
+
         // 상단 좌측 텍스트 뷰 클릭 시 DatePickerDialog 표시
         dateTextView.setOnClickListener {
             showDatePickerDialog()
         }
+
+
 
         // SharedPreferences에서 목표 칼로리 가져오기
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
