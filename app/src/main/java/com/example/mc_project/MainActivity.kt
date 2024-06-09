@@ -19,7 +19,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
     private var intakeCalories = 0.0
@@ -61,18 +60,15 @@ class MainActivity : AppCompatActivity() {
                     startActivity(intent)
                     true
                 }
-
                 R.id.menu_mypage -> {
                     val intent = Intent(this@MainActivity, MyPageActivity::class.java)
                     startActivity(intent)
                     true
                 }
-
                 R.id.menu_refresh -> {
                     fetchMainPageDataByDate(currentDate)  // 새로 고침 시에도 동일한 날짜 데이터를 요청
                     true
                 }
-
                 else -> false
             }
         }
@@ -85,25 +81,21 @@ class MainActivity : AppCompatActivity() {
                     startActivityForResult(intent, FOOD_REGISTRATION_REQUEST_CODE)
                     true
                 }
-
                 R.id.nav_timer -> {
                     val intent = Intent(this@MainActivity, TimerActivity::class.java)
                     startActivity(intent)
                     true
                 }
-
                 R.id.nav_report -> {
                     val intent = Intent(this@MainActivity, ReportActivity::class.java)
                     startActivity(intent)
                     true
                 }
-
                 R.id.nav_pro -> {
                     val intent = Intent(this@MainActivity, ProActivity::class.java)
                     startActivity(intent)
                     true
                 }
-
                 else -> false
             }
         }
@@ -123,53 +115,39 @@ class MainActivity : AppCompatActivity() {
                 val burnedCaloriesFromExercise = exerciseHour.toInt() * 400  // 운동 시간당 400 칼로리로 변경
                 burnedCalories += burnedCaloriesFromExercise
                 Log.d("MainActivity", "Burned calories from exercise: $burnedCaloriesFromExercise")
+            } else if (exerciseHour != null) {
+                val burnedCaloriesFromExercise = exerciseHour.toInt() * 200
+                burnedCalories += burnedCaloriesFromExercise
+                Log.d("MainActivity", "Burned calories from exercise: $burnedCaloriesFromExercise")
             }
 
             updateIntakeAndRemainingCalories() // 잔여 칼로리 업데이트
         }
     }
 
-
-
     private fun fetchMainPageDataByDate(date: String) {
-        RetrofitInstance.api.getMainPageDataByDate(date)
-            .enqueue(object : Callback<MainPageResponse> {
-                override fun onResponse(
-                    call: Call<MainPageResponse>,
-                    response: Response<MainPageResponse>
-                ) {
-                    if (response.isSuccessful) {
-                        val mainPageData = response.body()?.data
-                        mainPageData?.let {
-                            intakeCalories = it.totalCalories
-                            burnedCalories = it.totalBurnedCalories.toInt()
-                            updateUI(
-                                it.totalCalories,
-                                it.totalCarbohydrate,
-                                it.totalProteins,
-                                it.totalFat,
-                                it.totalBurnedCalories
-                            )
-                            updateIntakeAndRemainingCalories()
-                        }
-                    } else {
-                        Log.e("MainActivity", "Response failed")
+        RetrofitInstance.api.getMainPageDataByDate(date).enqueue(object : Callback<MainPageResponse> {
+            override fun onResponse(call: Call<MainPageResponse>, response: Response<MainPageResponse>) {
+                if (response.isSuccessful) {
+                    val mainPageData = response.body()?.data
+                    mainPageData?.let {
+                        intakeCalories = it.totalCalories
+                        burnedCalories = it.totalBurnedCalories.toInt()
+                        updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat, it.totalBurnedCalories)
+                        updateIntakeAndRemainingCalories()
                     }
+                } else {
+                    Log.e("MainActivity", "Response failed")
                 }
+            }
 
-                override fun onFailure(call: Call<MainPageResponse>, t: Throwable) {
-                    Log.e("MainActivity", "Request failed", t)
-                }
-            })
+            override fun onFailure(call: Call<MainPageResponse>, t: Throwable) {
+                Log.e("MainActivity", "Request failed", t)
+            }
+        })
     }
 
-    private fun updateUI(
-        calories: Double,
-        carbs: Double,
-        proteins: Double,
-        fat: Double,
-        burned: Long
-    ) {
+    private fun updateUI(calories: Double, carbs: Double, proteins: Double, fat: Double, burned: Long) {
         val carbsProgressBar: ProgressBar = findViewById(R.id.pbCarbs)
         val carbsProgressTextView: TextView = findViewById(R.id.tvCarbsProgress)
         val proteinProgressBar: ProgressBar = findViewById(R.id.pbProtein)
@@ -196,17 +174,14 @@ class MainActivity : AppCompatActivity() {
         val remainingCaloriesProgressBar: ProgressBar = findViewById(R.id.pbRemainingCalories)
 
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
-        val remainingCalories = dailyCalorieGoal - intakeCalories + burnedCalories
-        remainingCaloriesTextView.text = "${remainingCalories.toInt()} kcal"
 
-        Log.d("MainActivity", "Intake calories: $intakeCalories")
-        Log.d("MainActivity", "Burned calories: $burnedCalories")
-        Log.d("MainActivity", "Remaining calories: $remainingCalories")
+        // 잔여 칼로리 계산: 목표 칼로리 - 섭취량 + (운동 칼로리 * 400)
+        val remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 400)
+        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
 
         val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
         remainingCaloriesProgressBar.progress = progress
     }
-
 
     private fun calculateProgress(current: Double, goal: Double): Int {
         return ((current / goal) * 100).toInt()
@@ -221,13 +196,7 @@ class MainActivity : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
-                val selectedDate = String.format(
-                    Locale.getDefault(),
-                    "%04d-%02d-%02d",
-                    year,
-                    month + 1,
-                    dayOfMonth
-                )
+                val selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 dateTextView.text = selectedDate
                 fetchMainPageDataByDate(selectedDate)
             },
