@@ -4,7 +4,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.widget.ImageButton
+import android.util.Log
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +15,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,10 +22,16 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
     private var intakeCalories = 0.0
-    private var burnedCalories = 0 // 소비량 변수 추가
-    private var dailyCalorieGoal = 2700.0 // 기본값, SharedPreferences에서 업데이트됨
+    private var burnedCalories = 0
+    private var dailyCalorieGoal = 2700.0
     private lateinit var dateTextView: TextView
-    private var currentDate = "2024-06-09" // 초기 날짜 설정
+    private var currentDate: String
+
+    init {
+        // 시스템 날짜로 currentDate 초기화
+        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        currentDate = sdf.format(Date())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.menu_refresh -> {
-                    fetchDataFromApi()
+                    fetchMainPageDataByDate(currentDate)  // 새로 고침 시에도 동일한 날짜 데이터를 요청
                     true
                 }
                 else -> false
@@ -97,13 +101,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Fetch data from API using Retrofit
-        fetchDataFromApi()
-
-        // Set current date on TextView
-        dateTextView = findViewById(R.id.dateTextView)
-        dateTextView.text = currentDate
-
-
+        fetchMainPageDataByDate(currentDate)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -122,15 +120,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun fetchDataFromApi() {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("http://43.200.181.134:8080/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-
-        val apiService = retrofit.create(FoodApiService::class.java)
-
-        apiService.getMainPageData().enqueue(object : Callback<MainPageResponse> {
+    private fun fetchMainPageDataByDate(date: String) {
+        RetrofitInstance.api.getMainPageDataByDate(date).enqueue(object : Callback<MainPageResponse> {
             override fun onResponse(call: Call<MainPageResponse>, response: Response<MainPageResponse>) {
                 if (response.isSuccessful) {
                     val mainPageData = response.body()?.data
@@ -140,11 +131,13 @@ class MainActivity : AppCompatActivity() {
                         updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat, it.totalBurnedCalories)
                         updateIntakeAndRemainingCalories()
                     }
+                } else {
+                    Log.e("MainActivity", "Response failed")
                 }
             }
 
             override fun onFailure(call: Call<MainPageResponse>, t: Throwable) {
-                t.printStackTrace()
+                Log.e("MainActivity", "Request failed", t)
             }
         })
     }
@@ -187,24 +180,6 @@ class MainActivity : AppCompatActivity() {
         return ((current / goal) * 100).toInt()
     }
 
-    private fun getPreviousDate(date: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = sdf.parse(date) ?: Date()
-        val calendar = Calendar.getInstance()
-        calendar.time = currentDate
-        calendar.add(Calendar.DAY_OF_YEAR, -1)
-        return sdf.format(calendar.time)
-    }
-
-    private fun getNextDate(date: String): String {
-        val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val currentDate = sdf.parse(date) ?: Date()
-        val calendar = Calendar.getInstance()
-        calendar.time = currentDate
-        calendar.add(Calendar.DAY_OF_YEAR, 1)
-        return sdf.format(calendar.time)
-    }
-
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
         val year = calendar.get(Calendar.YEAR)
@@ -214,8 +189,9 @@ class MainActivity : AppCompatActivity() {
         val datePickerDialog = DatePickerDialog(
             this,
             { _, year, month, dayOfMonth ->
-                val selectedDate = "$year-${month + 1}-$dayOfMonth"
+                val selectedDate = String.format(Locale.getDefault(), "%04d-%02d-%02d", year, month + 1, dayOfMonth)
                 dateTextView.text = selectedDate
+                fetchMainPageDataByDate(selectedDate)
             },
             year,
             month,
@@ -223,8 +199,4 @@ class MainActivity : AppCompatActivity() {
         )
         datePickerDialog.show()
     }
-
-
-
-
 }
