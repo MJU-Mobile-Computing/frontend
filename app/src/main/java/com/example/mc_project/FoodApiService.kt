@@ -7,7 +7,9 @@ import com.example.mc_project.models.FoodRegistrationRequest
 import com.example.mc_project.models.FoodRegistrationResponse
 import com.example.mc_project.models.QuestionRequest
 import com.example.mc_project.models.GPTResponse
+import com.example.mc_project.models.GoalCaloriesRequest
 import com.example.mc_project.models.MainPageResponse
+import com.example.mc_project.models.MessageResponse
 import com.example.mc_project.models.MyPageData
 import com.example.mc_project.models.MyPageResponse
 import com.example.mc_project.models.SearchFoodResponse
@@ -51,4 +53,7 @@ interface FoodApiService {
 
     @GET("mainpage/date")
     fun getMainPageDataByDate(@Query("date") date: String): Call<MainPageResponse>
+
+    @POST("mainpage/goalCalories")
+    fun setGoalCalories(@Body request: GoalCaloriesRequest): Call<MessageResponse>
 }
