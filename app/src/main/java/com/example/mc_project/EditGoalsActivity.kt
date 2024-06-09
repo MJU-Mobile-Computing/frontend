@@ -6,6 +6,11 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.mc_project.databinding.ActivityEditgoalsBinding
+import com.example.mc_project.models.GoalCaloriesRequest
+import com.example.mc_project.models.MessageResponse
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EditGoalsActivity : BaseActivity() {
 
@@ -101,6 +106,39 @@ class EditGoalsActivity : BaseActivity() {
         }
         resultIntent.putExtras(bundle)
         setResult(Activity.RESULT_OK, resultIntent)
+
+        // Calculate and set the new recommended calories based on weight
+        val newGoalCalories = calculateRecommendedCalories(currentWeight.toDouble(), goalWeight.toDouble(), activityLevel)
+        setGoalCalories(newGoalCalories)
+
         Toast.makeText(this, "목표가 저장되었습니다", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun calculateRecommendedCalories(currentWeight: Double, goalWeight: Double, activityLevel: String): Float {
+        // Simple calculation for example purposes
+        // You can replace this with the actual formula for calculating recommended calories
+        return (currentWeight * 10 + goalWeight * 6.25).toFloat()
+    }
+
+    private fun setGoalCalories(goalCalories: Float) {
+        val request = GoalCaloriesRequest(goalCalories)
+        RetrofitInstance.api.setGoalCalories(request).enqueue(object : Callback<MessageResponse> {
+            override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
+                if (response.isSuccessful) {
+                    Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 완료", Toast.LENGTH_SHORT).show()
+
+                    // Refresh the main activity
+                    val intent = Intent(this@EditGoalsActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 실패", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<MessageResponse>, t: Throwable) {
+                Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 오류", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

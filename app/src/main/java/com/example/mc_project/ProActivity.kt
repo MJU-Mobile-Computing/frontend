@@ -36,6 +36,8 @@ class ProActivity : BaseActivity() {
             // 새로운 링크로 이동
             val url =
                 "https://www.coupang.com/np/search?component=&q=%EB%8B%AD%EA%B0%80%EC%8A%B4%EC%82%B4&channel=user"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            startActivity(intent)
 
 
         }
