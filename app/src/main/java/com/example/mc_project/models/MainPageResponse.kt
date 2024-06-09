@@ -15,5 +15,6 @@ data class Data(
     @SerializedName("totalCarbohydrate") val totalCarbohydrate: Double,
     @SerializedName("totalProteins") val totalProteins: Double,
     @SerializedName("totalFat") val totalFat: Double,
-    @SerializedName("totalExerciseTime") val totalBurnedCalories: Long
+    @SerializedName("totalExerciseTime") val totalBurnedCalories: Long,
+    @SerializedName("goalCalories") val goalCalories: Double
 )

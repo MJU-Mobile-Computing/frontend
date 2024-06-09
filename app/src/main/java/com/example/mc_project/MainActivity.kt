@@ -2,7 +2,6 @@ package com.example.mc_project
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.ProgressBar
@@ -21,6 +20,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val FOOD_REGISTRATION_REQUEST_CODE = 101
+    private val CALENDAR_REQUEST_CODE = 102
     private var intakeCalories = 0.0
     private var burnedCalories = 0
     private var dailyCalorieGoal = 2700.0
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity() {
             when (menuItem.itemId) {
                 R.id.menu_calendar -> {
                     val intent = Intent(this@MainActivity, CalendarActivity::class.java)
-                    startActivity(intent)
+                    startActivityForResult(intent, CALENDAR_REQUEST_CODE)
                     true
                 }
                 R.id.menu_mypage -> {
@@ -117,6 +117,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             updateIntakeAndRemainingCalories()
+        } else if (requestCode == CALENDAR_REQUEST_CODE && resultCode == RESULT_OK) {
+            // 목표 칼로리 설정이 변경된 경우 메인화면 데이터 새로고침
+            fetchMainPageDataByDate(currentDate)
         }
     }
 
@@ -128,6 +131,7 @@ class MainActivity : AppCompatActivity() {
                     mainPageData?.let {
                         intakeCalories = it.totalCalories
                         burnedCalories = it.totalBurnedCalories.toInt()
+                        dailyCalorieGoal = it.goalCalories // Update the goal calories
                         updateUI(it.totalCalories, it.totalCarbohydrate, it.totalProteins, it.totalFat, it.totalBurnedCalories)
                         updateIntakeAndRemainingCalories()
                     }
