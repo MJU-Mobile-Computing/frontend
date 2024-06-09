@@ -58,9 +58,9 @@ class ReportActivity : BaseActivity() {
 
         // 예제 칼로리 섭취 데이터 생성 (최근 6개월)
         val calorieIntake = listOf(2000f, 2100f, 1900f, 2200f, 2300f, 2000f)
-        val carbIntake = listOf(250f, 260f, 240f, 270f, 280f, 250f)
-        val proteinIntake = listOf(80f, 85f, 75f, 90f, 95f, 80f)
-        val fatIntake = listOf(70f, 75f, 65f, 80f, 85f, 70f)
+        val carbIntake = listOf(250f, 210f, 190f, 270f, 280f, 310f)
+        val proteinIntake = listOf(80f, 80f, 90f, 100f, 100f, 95f)
+        val fatIntake = listOf(70f, 70f, 65f, 60f, 65f, 60f)
 
         // 각 영양 성분별 그래프에 데이터 설정
         setCalorieChartData(calorieIntake)
