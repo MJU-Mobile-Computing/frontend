@@ -1,6 +1,5 @@
 package com.example.mc_project
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -23,6 +22,9 @@ class CalendarActivity : BaseActivity() {
         setContentView(binding.root)
 
         addBackButton()
+
+        // SharedData에 저장된 remainingCalories 값을 표시
+        binding.recommendedCaloriesTextView.text = "목표 권장 소비량: ${SharedData.remainingCalories.toInt()} kcal"
 
         // 서버에서 목표 칼로리 값을 가져옴
         fetchGoalCalories()

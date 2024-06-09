@@ -11,6 +11,7 @@ import com.example.mc_project.models.GoalCaloriesRequest
 import com.example.mc_project.models.MainPageResponse
 import com.example.mc_project.models.MessageResponse
 import com.example.mc_project.models.MyPageData
+import com.example.mc_project.models.MyPageGoalData
 import com.example.mc_project.models.MyPageResponse
 import com.example.mc_project.models.SearchFoodResponse
 import com.google.gson.JsonObject
@@ -29,6 +30,9 @@ interface FoodApiService {
 
     @POST("api/v1/chat-gpt")
     fun askGPT(@Body question: QuestionRequest): Call<GPTResponse>
+
+    @PATCH("mypage")
+    fun updateMyPageGoalData(@Body data: MyPageGoalData): Call<MyPageResponse>
 
     @GET("mainpage")
     fun getMainPageData(): Call<MainPageResponse>

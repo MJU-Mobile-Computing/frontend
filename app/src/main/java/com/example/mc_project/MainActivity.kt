@@ -50,6 +50,12 @@ class MainActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
         dailyCalorieGoal = sharedPreferences.getInt("goalCalorie", 2700).toDouble()
 
+        // 목표 칼로리 값을 Intent로부터 가져오기
+        val intent = intent
+        if (intent.hasExtra("goalCalories")) {
+            dailyCalorieGoal = intent.getFloatExtra("goalCalories", 2700f).toDouble()
+        }
+
         // MaterialToolbar 가져오기
         val topAppBar: MaterialToolbar = findViewById(R.id.topAppBar)
         topAppBar.setOnMenuItemClickListener { menuItem ->
@@ -175,11 +181,11 @@ class MainActivity : AppCompatActivity() {
 
         intakeCaloriesTextView.text = intakeCalories.toInt().toString()
 
-        // 잔여 칼로리 계산: 목표 칼로리 - 섭취량 + (운동 칼로리 * 400)
-        val remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 200)
-        remainingCaloriesTextView.text = "${remainingCalories.toInt()} cal"
+        // 잔여 칼로리 계산: 목표 칼로리 - 섭취량 + (운동 칼로리 * 200)
+        SharedData.remainingCalories = dailyCalorieGoal - intakeCalories + (burnedCalories * 200)
+        remainingCaloriesTextView.text = "${SharedData.remainingCalories.toInt()} cal"
 
-        val progress = calculateProgress(remainingCalories, dailyCalorieGoal)
+        val progress = calculateProgress(SharedData.remainingCalories, dailyCalorieGoal)
         remainingCaloriesProgressBar.progress = progress
     }
 

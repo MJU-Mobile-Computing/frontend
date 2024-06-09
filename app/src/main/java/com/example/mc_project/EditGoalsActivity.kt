@@ -3,11 +3,14 @@ package com.example.mc_project
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import com.example.mc_project.databinding.ActivityEditgoalsBinding
 import com.example.mc_project.models.GoalCaloriesRequest
 import com.example.mc_project.models.MessageResponse
+import com.example.mc_project.models.MyPageGoalData
+import com.example.mc_project.models.MyPageResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -96,28 +99,26 @@ class EditGoalsActivity : BaseActivity() {
             return
         }
 
-        val resultIntent = Intent()
-        val bundle = Bundle().apply {
-            putString("goal", goal)
-            putString("currentWeight", currentWeight)
-            putString("goalWeight", goalWeight)
-            putString("activityLevel", activityLevel)
-            putString("goalSteps", goalSteps)
-        }
-        resultIntent.putExtras(bundle)
-        setResult(Activity.RESULT_OK, resultIntent)
+        val myPageGoalData = MyPageGoalData(goal, currentWeight, goalWeight, goalSteps)
 
-        // Calculate and set the new recommended calories based on weight
-        val newGoalCalories = calculateRecommendedCalories(currentWeight.toDouble(), goalWeight.toDouble(), activityLevel)
-        setGoalCalories(newGoalCalories)
+        // 목표 데이터를 업데이트
+        RetrofitInstance.api.updateMyPageGoalData(myPageGoalData).enqueue(object : Callback<MyPageResponse> {
+            override fun onResponse(call: Call<MyPageResponse>, response: Response<MyPageResponse>) {
+                if (response.isSuccessful) {
+                    // 목표 칼로리를 계산하여 갱신
+                    val newGoalCalories = calculateRecommendedCalories(currentWeight.toDouble(), goalWeight.toDouble(), activityLevel)
+                    setGoalCalories(newGoalCalories)
+                } else {
+                    Toast.makeText(this@EditGoalsActivity, "마이페이지 정보 수정 실패", Toast.LENGTH_SHORT).show()
+                    Log.e("EditGoalsActivity", "API Error: ${response.errorBody()?.string()}")
+                }
+            }
 
-        Toast.makeText(this, "목표가 저장되었습니다", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun calculateRecommendedCalories(currentWeight: Double, goalWeight: Double, activityLevel: String): Float {
-        // Simple calculation for example purposes
-        // You can replace this with the actual formula for calculating recommended calories
-        return (currentWeight * 10 + goalWeight * 6.25).toFloat() + 700
+            override fun onFailure(call: Call<MyPageResponse>, t: Throwable) {
+                Toast.makeText(this@EditGoalsActivity, "마이페이지 정보 수정 오류", Toast.LENGTH_SHORT).show()
+                Log.e("EditGoalsActivity", "API Failure", t)
+            }
+        })
     }
 
     private fun setGoalCalories(goalCalories: Float) {
@@ -125,12 +126,14 @@ class EditGoalsActivity : BaseActivity() {
         RetrofitInstance.api.setGoalCalories(request).enqueue(object : Callback<MessageResponse> {
             override fun onResponse(call: Call<MessageResponse>, response: Response<MessageResponse>) {
                 if (response.isSuccessful) {
-                    Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 완료", Toast.LENGTH_SHORT).show()
+                    // SharedPreferences에 목표 칼로리 저장
+                    val sharedPreferences = getSharedPreferences("app_prefs", MODE_PRIVATE)
+                    val editor = sharedPreferences.edit()
+                    editor.putInt("goalCalorie", goalCalories.toInt())
+                    editor.apply()
 
-                    // Refresh the main activity
-                    val intent = Intent(this@EditGoalsActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-                    startActivity(intent)
+                    Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 완료", Toast.LENGTH_SHORT).show()
+                    navigateToMain(goalCalories)
                 } else {
                     Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 실패", Toast.LENGTH_SHORT).show()
                 }
@@ -140,5 +143,25 @@ class EditGoalsActivity : BaseActivity() {
                 Toast.makeText(this@EditGoalsActivity, "목표 칼로리 설정 오류", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    private fun navigateToMain(goalCalories: Float) {
+        val intent = Intent(this@EditGoalsActivity, MainActivity::class.java)
+        intent.putExtra("goalCalories", goalCalories)
+        startActivity(intent)
+        finish()
+    }
+
+    private fun calculateRecommendedCalories(currentWeight: Double, goalWeight: Double, activityLevel: String): Float {
+        // Simple calculation for example purposes
+        // You can replace this with the actual formula for calculating recommended calories
+        return (currentWeight * 10 + goalWeight * 6.25).toFloat() + 700
+    }
+
+    private fun navigateToCalendar(goalCalories: Float) {
+        val intent = Intent(this@EditGoalsActivity, CalendarActivity::class.java)
+        intent.putExtra("goalCalories", goalCalories)
+        startActivity(intent)
+        finish()
     }
 }
