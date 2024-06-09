@@ -119,15 +119,16 @@ class MainActivity : AppCompatActivity() {
             intakeCalories += additionalCalories
 
             val exerciseHour = data?.getStringExtra("exerciseHour")
-            if (exerciseHour != null) {
+            if (exerciseHour != null && exerciseHour.isNotEmpty()) {
                 val burnedCaloriesFromExercise = exerciseHour.toInt() * 400  // 운동 시간당 400 칼로리로 변경
                 burnedCalories += burnedCaloriesFromExercise
+                Log.d("MainActivity", "Burned calories from exercise: $burnedCaloriesFromExercise")
             }
 
             updateIntakeAndRemainingCalories() // 잔여 칼로리 업데이트
-
         }
     }
+
 
 
     private fun fetchMainPageDataByDate(date: String) {
