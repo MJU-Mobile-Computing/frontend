@@ -36,7 +36,7 @@ class EditGoalsActivity : BaseActivity() {
             binding.spinnerActivityLevel.adapter = adapter
         }
 
-        setInitialValues()
+        //setInitialValues()
 
         binding.buttonEdit.setOnClickListener {
             toggleEditMode()
